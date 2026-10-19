@@ -1,0 +1,38 @@
+[project]
+name = "arabic-sentiment-benchmark"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "accelerate>=1.15.0",
+    "datasets>=5.1.0",
+    "evaluate>=0.4.6",
+    "mlflow>=3.17.1",
+    "numpy>=2.5.2",
+    "pandas>=3.0.6",
+    "scikit-learn>=1.9.1",
+    "torch>=2.11.0",
+    "transformers>=5.20.1",
+]
+
+[project.scripts]
+arabic-sentiment-benchmark = "arabic_sentiment_benchmark:main"
+
+[build-system]
+requires = ["uv_build>=0.13.1,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu128"
+
+[dependency-groups]
+dev = [
+    "jupyter>=1.1.1",
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]
