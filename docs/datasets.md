@@ -11,11 +11,13 @@ Task: binary sentiment (negative vs positive) on all four datasets, so results a
 - Notes: official split is exactly balanced (2,352 per class train, 587 per class test). Full set is skewed toward 5 stars (23,778 vs 2,939 for 1 star). 65 texts appear in both train and test, removed from test in the loader. 300 duplicate rows in the official data.
 
 ## HARD
-- Source: pending (GitHub, to be verified).
-- Size: pending.
-- Labels: pending.
-- Variety: pending.
-- License: pending.
+- Source: GitHub `elnagara/HARD-Arabic-Dataset`, file `data/balanced-reviews.zip`. Paper: Elnagar, Khalifa, Einea (2018), Springer.
+- Size: 105,698 rows in the balanced file. The repo README says 93,700, which is out of date; `data/readme.txt` says to use the zip as the latest. The full unbalanced set (373,750 reviews) is not used.
+- Labels: ratings 1, 2, 4, 5 only (no 3 stars). Binary: 1-2 negative (52,849), 4-5 positive (52,849).
+- Variety: hotel reviews from Booking.com, MSA and dialect.
+- Format: tab-separated, UTF-16 little-endian with BOM and CRLF. Read with `encoding='utf-16', quoting=3`. Columns: no, Hotel name, rating, user type, room type, nights, review.
+- License: not yet verified, check the repo.
+- Notes: 1,662 duplicate review texts, handled in the loader. No official split, so we create a seeded stratified split.
 
 ## ASTD
 - Source: Hugging Face `arbml/ASTD`.
