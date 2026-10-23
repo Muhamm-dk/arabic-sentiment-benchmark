@@ -1,0 +1,82 @@
+[
+  {
+    "dataset": "labr",
+    "config": {
+      "normalize": false,
+      "features": "char",
+      "C": 10
+    },
+    "val_macro_f1": 0.8395,
+    "test_macro_f1": 0.8155,
+    "test_macro_f1_ci95": [
+      0.7986,
+      0.8304
+    ],
+    "test_accuracy": 0.8156,
+    "n_test": 2283
+  },
+  {
+    "dataset": "hard",
+    "config": {
+      "normalize": true,
+      "features": "char",
+      "C": 1
+    },
+    "val_macro_f1": 0.9411,
+    "test_macro_f1": 0.9411,
+    "test_macro_f1_ci95": [
+      0.9366,
+      0.9454
+    ],
+    "test_accuracy": 0.9411,
+    "n_test": 10707
+  },
+  {
+    "dataset": "hard_notitle",
+    "config": {
+      "normalize": true,
+      "features": "char",
+      "C": 10
+    },
+    "val_macro_f1": 0.8753,
+    "test_macro_f1": 0.871,
+    "test_macro_f1_ci95": [
+      0.8648,
+      0.8772
+    ],
+    "test_accuracy": 0.871,
+    "n_test": 10707
+  },
+  {
+    "dataset": "astd",
+    "config": {
+      "normalize": false,
+      "features": "char",
+      "C": 10
+    },
+    "val_macro_f1": 0.819,
+    "test_macro_f1": 0.7708,
+    "test_macro_f1_ci95": [
+      0.7095,
+      0.8277
+    ],
+    "test_accuracy": 0.8182,
+    "n_test": 242
+  },
+  {
+    "dataset": "ajgt",
+    "config": {
+      "normalize": true,
+      "features": "char",
+      "C": 10
+    },
+    "val_macro_f1": 0.8608,
+    "test_macro_f1": 0.8722,
+    "test_macro_f1_ci95": [
+      0.8217,
+      0.9166
+    ],
+    "test_accuracy": 0.8722,
+    "n_test": 180
+  }
+]
