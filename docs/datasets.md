@@ -32,3 +32,19 @@ Task: binary sentiment (negative vs positive) on all four datasets, so results a
 - Labels: Negative, Positive.
 - Variety: tweets, Jordanian dialect with some MSA.
 - License: not yet verified, check the dataset card.
+## Processing decisions
+- Binary label on all datasets (0 negative, 1 positive). Raw text is stored; model-specific preprocessing happens at training time.
+- Whitespace is normalized, exact duplicates are removed, texts with conflicting labels are dropped.
+- LABR: official test kept, texts also present in train removed from test (55), 10% of train held out as validation.
+- ASTD and AJGT: seeded (42) stratified 80/10/10 split.
+- HARD: 80/10/10 split by hotel, so no hotel appears in two splits. Hotel-level splitting shifts class balance (val 54.6% positive vs 49.1% train).
+- `variety` is dataset-level and coarse; per-example dialect labels are needed for the dialect error analysis.
+
+## Final sizes (train / val / test)
+- labr: 8,301 / 923 / 2,283
+- hard and hard_notitle: 81,906 / 10,421 / 10,707 (103,034 rows after dedupe)
+- astd: 1,935 / 242 / 242 (68% negative)
+- ajgt: 1,440 / 180 / 180
+
+## HARD descriptor leak
+Most HARD reviews begin with a one or two word segment (for example استثنائي, ضعيف جداً, مخيب للأمل) that maps almost one-to-one to a single star level (استثنائي is 5 stars in 6,724 of 6,727 reviews). This is consistent with Booking.com score labels, not yet verified against the paper. TF-IDF + logistic regression (random split, deduplicated) reaches macro-F1 0.937 on raw text and 0.840 with the leading segment crudely removed. Two variants are benchmarked on identical rows and splits: `hard` (as released, leaky upper bound) and `hard_notitle` (descriptor removed by exact match on a fixed list of 9 phrases, conservative lower bound).
