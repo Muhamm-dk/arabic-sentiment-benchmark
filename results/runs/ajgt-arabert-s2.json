@@ -1,0 +1,16 @@
+{
+  "run": "ajgt-arabert-s2",
+  "dataset": "ajgt",
+  "model": "arabert",
+  "seed": 2,
+  "best_epoch": 1,
+  "val_macro_f1": 0.9277,
+  "test_macro_f1": 0.8999,
+  "test_macro_f1_ci95": [
+    0.8529,
+    0.938
+  ],
+  "test_accuracy": 0.9,
+  "n_test": 180,
+  "peak_vram_gib": 2.91
+}

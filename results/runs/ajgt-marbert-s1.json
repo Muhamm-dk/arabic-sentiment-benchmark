@@ -1,0 +1,16 @@
+{
+  "run": "ajgt-marbert-s1",
+  "dataset": "ajgt",
+  "model": "marbert",
+  "seed": 1,
+  "best_epoch": 4,
+  "val_macro_f1": 0.95,
+  "test_macro_f1": 0.9389,
+  "test_macro_f1_ci95": [
+    0.8999,
+    0.9721
+  ],
+  "test_accuracy": 0.9389,
+  "n_test": 180,
+  "peak_vram_gib": 3.21
+}

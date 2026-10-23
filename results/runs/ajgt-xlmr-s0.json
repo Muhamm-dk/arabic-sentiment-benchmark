@@ -1,0 +1,16 @@
+{
+  "run": "ajgt-xlmr-s0",
+  "dataset": "ajgt",
+  "model": "xlmr",
+  "seed": 0,
+  "best_epoch": 5,
+  "val_macro_f1": 0.8722,
+  "test_macro_f1": 0.8778,
+  "test_macro_f1_ci95": [
+    0.8276,
+    0.9217
+  ],
+  "test_accuracy": 0.8778,
+  "n_test": 180,
+  "peak_vram_gib": 5.23
+}

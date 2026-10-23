@@ -1,0 +1,16 @@
+{
+  "run": "astd-arabert-s1",
+  "dataset": "astd",
+  "model": "arabert",
+  "seed": 1,
+  "best_epoch": 2,
+  "val_macro_f1": 0.8604,
+  "test_macro_f1": 0.8904,
+  "test_macro_f1_ci95": [
+    0.8412,
+    0.9319
+  ],
+  "test_accuracy": 0.9091,
+  "n_test": 242,
+  "peak_vram_gib": 2.91
+}
