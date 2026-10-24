@@ -1,0 +1,16 @@
+{
+  "run": "hard-marbert-s0-n20000",
+  "dataset": "hard",
+  "model": "marbert",
+  "seed": 0,
+  "best_epoch": 2,
+  "val_macro_f1": 0.9554,
+  "test_macro_f1": 0.9561,
+  "test_macro_f1_ci95": [
+    0.9525,
+    0.96
+  ],
+  "test_accuracy": 0.9561,
+  "n_test": 10707,
+  "peak_vram_gib": 5.17
+}

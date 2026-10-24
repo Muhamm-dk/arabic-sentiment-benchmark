@@ -1,0 +1,16 @@
+{
+  "run": "hard-xlmr-s0-n20000",
+  "dataset": "hard",
+  "model": "xlmr",
+  "seed": 0,
+  "best_epoch": 3,
+  "val_macro_f1": 0.9548,
+  "test_macro_f1": 0.953,
+  "test_macro_f1_ci95": [
+    0.9492,
+    0.9569
+  ],
+  "test_accuracy": 0.953,
+  "n_test": 10707,
+  "peak_vram_gib": 6.0
+}

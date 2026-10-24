@@ -1,0 +1,16 @@
+{
+  "run": "hard-arabert-s0-n20000",
+  "dataset": "hard",
+  "model": "arabert",
+  "seed": 0,
+  "best_epoch": 3,
+  "val_macro_f1": 0.9565,
+  "test_macro_f1": 0.9568,
+  "test_macro_f1_ci95": [
+    0.9531,
+    0.9606
+  ],
+  "test_accuracy": 0.9569,
+  "n_test": 10707,
+  "peak_vram_gib": 4.87
+}
