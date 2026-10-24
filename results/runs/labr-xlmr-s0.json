@@ -1,0 +1,16 @@
+{
+  "run": "labr-xlmr-s0",
+  "dataset": "labr",
+  "model": "xlmr",
+  "seed": 0,
+  "best_epoch": 4,
+  "val_macro_f1": 0.8523,
+  "test_macro_f1": 0.848,
+  "test_macro_f1_ci95": [
+    0.8323,
+    0.8626
+  ],
+  "test_accuracy": 0.8484,
+  "n_test": 2283,
+  "peak_vram_gib": 5.98
+}

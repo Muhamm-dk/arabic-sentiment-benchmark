@@ -1,0 +1,21 @@
+labr-arabert-s0 epoch 1: train_loss=0.4670 val_macro_f1=0.8667
+labr-arabert-s0 epoch 2: train_loss=0.2823 val_macro_f1=0.8575
+labr-arabert-s0 epoch 3: train_loss=0.1854 val_macro_f1=0.8633
+labr-arabert-s0 epoch 4: train_loss=0.1203 val_macro_f1=0.8601
+  "best_epoch": 1,
+  "test_macro_f1": 0.8629,
+  "peak_vram_gib": 4.87
+labr-marbert-s0 epoch 1: train_loss=0.4421 val_macro_f1=0.8708
+labr-marbert-s0 epoch 2: train_loss=0.2417 val_macro_f1=0.8785
+labr-marbert-s0 epoch 3: train_loss=0.1250 val_macro_f1=0.8819
+labr-marbert-s0 epoch 4: train_loss=0.0689 val_macro_f1=0.8829
+  "best_epoch": 4,
+  "test_macro_f1": 0.8799,
+  "peak_vram_gib": 5.18
+labr-xlmr-s0 epoch 1: train_loss=0.6541 val_macro_f1=0.7257
+labr-xlmr-s0 epoch 2: train_loss=0.4797 val_macro_f1=0.8223
+labr-xlmr-s0 epoch 3: train_loss=0.3605 val_macro_f1=0.8403
+labr-xlmr-s0 epoch 4: train_loss=0.3020 val_macro_f1=0.8523
+  "best_epoch": 4,
+  "test_macro_f1": 0.848,
+  "peak_vram_gib": 5.98

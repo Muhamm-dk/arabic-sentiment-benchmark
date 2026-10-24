@@ -1,0 +1,16 @@
+{
+  "run": "labr-arabert-s0",
+  "dataset": "labr",
+  "model": "arabert",
+  "seed": 0,
+  "best_epoch": 1,
+  "val_macro_f1": 0.8667,
+  "test_macro_f1": 0.8629,
+  "test_macro_f1_ci95": [
+    0.8488,
+    0.8764
+  ],
+  "test_accuracy": 0.8629,
+  "n_test": 2283,
+  "peak_vram_gib": 4.87
+}
