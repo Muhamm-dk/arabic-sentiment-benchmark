@@ -1,0 +1,16 @@
+{
+  "tag": "gptoss-ajgt-val-en",
+  "model_id": "openai/gpt-oss-120b",
+  "date": "2026-10-24",
+  "prompt": "en",
+  "shots": 8,
+  "n": 60,
+  "macro_f1": 0.8548,
+  "macro_f1_ci95": [
+    0.7656,
+    0.9316
+  ],
+  "accuracy": 0.8333,
+  "invalid_rate": 0.05,
+  "avg_in_tokens": 339
+}
