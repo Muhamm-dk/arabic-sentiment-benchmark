@@ -1,0 +1,78 @@
+ajgt-xlmr-s0-tuned epoch 1: train_loss=0.6855 val_macro_f1=0.7338
+ajgt-xlmr-s0-tuned epoch 2: train_loss=0.4697 val_macro_f1=0.8492
+ajgt-xlmr-s0-tuned epoch 3: train_loss=0.3268 val_macro_f1=0.8555
+ajgt-xlmr-s0-tuned epoch 4: train_loss=0.2415 val_macro_f1=0.8441
+ajgt-xlmr-s0-tuned epoch 5: train_loss=0.1818 val_macro_f1=0.8554
+ajgt-xlmr-s0-tuned epoch 6: train_loss=0.1318 val_macro_f1=0.8665
+ajgt-xlmr-s0-tuned epoch 7: train_loss=0.0992 val_macro_f1=0.8555
+ajgt-xlmr-s0-tuned epoch 8: train_loss=0.0463 val_macro_f1=0.8721
+ajgt-xlmr-s0-tuned epoch 9: train_loss=0.0255 val_macro_f1=0.8776
+ajgt-xlmr-s0-tuned epoch 10: train_loss=0.0233 val_macro_f1=0.8664
+  "best_epoch": 9,
+  "test_macro_f1": 0.9,
+  "peak_vram_gib": 5.23
+ajgt-xlmr-s1-tuned epoch 1: train_loss=0.6278 val_macro_f1=0.7994
+ajgt-xlmr-s1-tuned epoch 2: train_loss=0.4341 val_macro_f1=0.8271
+ajgt-xlmr-s1-tuned epoch 3: train_loss=0.3659 val_macro_f1=0.8721
+ajgt-xlmr-s1-tuned epoch 4: train_loss=0.2409 val_macro_f1=0.8549
+ajgt-xlmr-s1-tuned epoch 5: train_loss=0.1918 val_macro_f1=0.8722
+ajgt-xlmr-s1-tuned epoch 6: train_loss=0.1176 val_macro_f1=0.8777
+ajgt-xlmr-s1-tuned epoch 7: train_loss=0.0787 val_macro_f1=0.8606
+ajgt-xlmr-s1-tuned epoch 8: train_loss=0.0668 val_macro_f1=0.8606
+ajgt-xlmr-s1-tuned epoch 9: train_loss=0.0491 val_macro_f1=0.8833
+ajgt-xlmr-s1-tuned epoch 10: train_loss=0.0290 val_macro_f1=0.8833
+  "best_epoch": 9,
+  "test_macro_f1": 0.9111,
+  "peak_vram_gib": 5.22
+ajgt-xlmr-s2-tuned epoch 1: train_loss=0.6424 val_macro_f1=0.7988
+ajgt-xlmr-s2-tuned epoch 2: train_loss=0.4527 val_macro_f1=0.8388
+ajgt-xlmr-s2-tuned epoch 3: train_loss=0.3189 val_macro_f1=0.8555
+ajgt-xlmr-s2-tuned epoch 4: train_loss=0.2634 val_macro_f1=0.8610
+ajgt-xlmr-s2-tuned epoch 5: train_loss=0.2010 val_macro_f1=0.8496
+ajgt-xlmr-s2-tuned epoch 6: train_loss=0.1475 val_macro_f1=0.8665
+ajgt-xlmr-s2-tuned epoch 7: train_loss=0.1018 val_macro_f1=0.8330
+ajgt-xlmr-s2-tuned epoch 8: train_loss=0.0733 val_macro_f1=0.8609
+ajgt-xlmr-s2-tuned epoch 9: train_loss=0.0556 val_macro_f1=0.8553
+ajgt-xlmr-s2-tuned epoch 10: train_loss=0.0520 val_macro_f1=0.8553
+  "best_epoch": 6,
+  "test_macro_f1": 0.8999,
+  "peak_vram_gib": 5.23
+astd-xlmr-s0-tuned epoch 1: train_loss=0.6414 val_macro_f1=0.4567
+astd-xlmr-s0-tuned epoch 2: train_loss=0.4618 val_macro_f1=0.7986
+astd-xlmr-s0-tuned epoch 3: train_loss=0.3433 val_macro_f1=0.7700
+astd-xlmr-s0-tuned epoch 4: train_loss=0.3082 val_macro_f1=0.7633
+astd-xlmr-s0-tuned epoch 5: train_loss=0.2089 val_macro_f1=0.7256
+astd-xlmr-s0-tuned epoch 6: train_loss=0.2026 val_macro_f1=0.7745
+astd-xlmr-s0-tuned epoch 7: train_loss=0.1256 val_macro_f1=0.7739
+astd-xlmr-s0-tuned epoch 8: train_loss=0.0931 val_macro_f1=0.7799
+astd-xlmr-s0-tuned epoch 9: train_loss=0.0726 val_macro_f1=0.7655
+astd-xlmr-s0-tuned epoch 10: train_loss=0.0462 val_macro_f1=0.7694
+  "best_epoch": 2,
+  "test_macro_f1": 0.7981,
+  "peak_vram_gib": 5.24
+astd-xlmr-s1-tuned epoch 1: train_loss=0.6098 val_macro_f1=0.8108
+astd-xlmr-s1-tuned epoch 2: train_loss=0.4468 val_macro_f1=0.8133
+astd-xlmr-s1-tuned epoch 3: train_loss=0.3744 val_macro_f1=0.7879
+astd-xlmr-s1-tuned epoch 4: train_loss=0.2854 val_macro_f1=0.7835
+astd-xlmr-s1-tuned epoch 5: train_loss=0.2499 val_macro_f1=0.7926
+astd-xlmr-s1-tuned epoch 6: train_loss=0.2232 val_macro_f1=0.7940
+astd-xlmr-s1-tuned epoch 7: train_loss=0.1357 val_macro_f1=0.7729
+astd-xlmr-s1-tuned epoch 8: train_loss=0.1305 val_macro_f1=0.7891
+astd-xlmr-s1-tuned epoch 9: train_loss=0.0801 val_macro_f1=0.7926
+astd-xlmr-s1-tuned epoch 10: train_loss=0.0869 val_macro_f1=0.7926
+  "best_epoch": 2,
+  "test_macro_f1": 0.8095,
+  "peak_vram_gib": 5.24
+astd-xlmr-s2-tuned epoch 1: train_loss=0.6036 val_macro_f1=0.7905
+astd-xlmr-s2-tuned epoch 2: train_loss=0.5056 val_macro_f1=0.8156
+astd-xlmr-s2-tuned epoch 3: train_loss=0.4145 val_macro_f1=0.8166
+astd-xlmr-s2-tuned epoch 4: train_loss=0.3536 val_macro_f1=0.7808
+astd-xlmr-s2-tuned epoch 5: train_loss=0.2922 val_macro_f1=0.7864
+astd-xlmr-s2-tuned epoch 6: train_loss=0.2178 val_macro_f1=0.8045
+astd-xlmr-s2-tuned epoch 7: train_loss=0.1788 val_macro_f1=0.7796
+astd-xlmr-s2-tuned epoch 8: train_loss=0.1248 val_macro_f1=0.7994
+astd-xlmr-s2-tuned epoch 9: train_loss=0.1153 val_macro_f1=0.7789
+astd-xlmr-s2-tuned epoch 10: train_loss=0.0936 val_macro_f1=0.7886
+  "best_epoch": 3,
+  "test_macro_f1": 0.8126,
+  "peak_vram_gib": 5.23

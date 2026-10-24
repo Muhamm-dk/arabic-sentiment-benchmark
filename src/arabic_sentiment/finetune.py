@@ -73,6 +73,7 @@ def main():
     ap.add_argument("--max_len", type=int, default=None)
     ap.add_argument("--train_subsample", type=int, default=None,
                     help="fixed seeded subsample of the training split (data seed 42, independent of --seed)")
+    ap.add_argument("--run_tag", default=None, help="suffix for the run name, keeps result files separate")
     ap.add_argument("--save", action="store_true", help="save best weights to outputs/<run>")
     a = ap.parse_args()
 
@@ -85,6 +86,8 @@ def main():
         # same row positions for hard and hard_notitle (identical rows and order), so only the text differs
         parts["train"] = parts["train"].sample(a.train_subsample, random_state=42).reset_index(drop=True)
         run += f"-n{a.train_subsample}"
+    if a.run_tag:
+        run += f"-{a.run_tag}"
 
     name = MODELS[a.model]
     tok = AutoTokenizer.from_pretrained(name)
