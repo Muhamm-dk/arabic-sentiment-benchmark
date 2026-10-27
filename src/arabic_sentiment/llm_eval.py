@@ -79,11 +79,12 @@ def call(key, body):
         if resp.status_code == 200:
             return resp
         if resp.status_code == 429:
+            print("429 body:", resp.text[:300], "retry-after:", resp.headers.get("retry-after"), flush=True)
             try:
                 wait = float(resp.headers.get("retry-after", 20))
             except ValueError:
                 wait = 20.0
-            if wait > 600:
+            if wait > 600 or "per day" in resp.text.lower():
                 raise RateLimited(f"quota exhausted, retry in {wait / 60:.0f} min: {resp.text[:200]}")
             time.sleep(wait + 1)
             continue

@@ -1,0 +1,16 @@
+{
+  "tag": "qwen-ajgt-test-en",
+  "model_id": "qwen/qwen3.8-27b",
+  "date": "2026-10-27",
+  "prompt": "en",
+  "shots": 8,
+  "n": 180,
+  "macro_f1": 0.8778,
+  "macro_f1_ci95": [
+    0.8328,
+    0.9213
+  ],
+  "accuracy": 0.8778,
+  "invalid_rate": 0.0,
+  "avg_in_tokens": 328
+}

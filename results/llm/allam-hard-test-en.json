@@ -1,0 +1,16 @@
+{
+  "tag": "allam-hard-test-en",
+  "model_id": "allam-2-7b",
+  "date": "2026-10-27",
+  "prompt": "en",
+  "shots": 8,
+  "n": 300,
+  "macro_f1": 0.9266,
+  "macro_f1_ci95": [
+    0.895,
+    0.9561
+  ],
+  "accuracy": 0.9267,
+  "invalid_rate": 0.0,
+  "avg_in_tokens": 394
+}

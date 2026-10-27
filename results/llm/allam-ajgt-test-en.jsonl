@@ -1,0 +1,180 @@
+{"i": 0, "text": "اربد فيها جامعات اكثر من عمان ... وفيها قد عمان ونص لعيبه المنتخب منها ... و 80 % من مطربين الاردن منها", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 255, "out_tok": 3}
+{"i": 1, "text": "لسانك قذر يا قمامه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 2, "text": "اترك ما تهوى لاجل من تخشى", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 3, "text": "احسنت كلام دقيق جدا", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 4, "text": "احمد الله تعالى ان اولادي لايدرسون في مدارس الاردن.", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 5, "text": "اسال الله ان يرزقني من يدعو لي في ظهر الغيب", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 240, "out_tok": 3}
+{"i": 6, "text": "استهبال باستهبال", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 7, "text": "اسفل من بعضهم", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 8, "text": "اصبحنا اصبح الملك لله اللهم لك الحمد احييتنا بعد ما متنا اليك النشور", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 245, "out_tok": 3}
+{"i": 9, "text": "اصدقاء اوفياء ونتعلم منهم", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 10, "text": "افلام الرعب تاثر على اطفالنا", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 11, "text": "اكبر مشكله تواجهكك في الاردن ؛ اذا طلعت من الدار شبعان ، بتعرفش وين تروح", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 248, "out_tok": 3}
+{"i": 12, "text": "الاردن لا تمتلك اي الخبرات الفنيه في انشاء او صيانه او تشغيل المفاعلات النوويه لاردن ليس لديها سوى شهادات دكتوراه في هذا المجال نظريه بحته ان انشاء مفاعل نووي يعنى مقامره كامله بمئات الملاييين المضحك في الموضوع ان بدايه المشروع ستكون انشاء مفاعل تجريبي او تعليمي يتبع لهيئه الطاقه النوويه اليس الاجدر بهكذا مفاعل ان يتبع لاحدى الجامعات علاوه على ان كل هيئه الطاقه تم انشاها رضوه لفلان وعلنتان الاولي يا ساده ان يتم طرح انشاء شركه للتنقيب عن اليورانيوم وبيعه لتصبح الاردن دوله مصدره لهذه الماده امر اخر كثر الحديث مؤخرا عن انه يوجد في الاردن بترول بكميات على الاقل تكفي استهلكنا المحلي", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 365, "out_tok": 3}
+{"i": 13, "text": "الحكم سيئ", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 231, "out_tok": 3}
+{"i": 14, "text": "الحمد لله على نعمه الاسلام وكفى يها نعمه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 15, "text": "الحمدلله زادت ثقافتي لكثير من الاشياء وتنوعت المفاهيم لدي", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 16, "text": "الراجل الابس ثوب عليه جاكيت شكله مسطول من جنوب السودان", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 17, "text": "الطاقه الشمسيه هي البديل وليست الطاقه النوويه", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 18, "text": "الله ايه الجمال ده سبحانك ربي", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 19, "text": "الله على الظالمين", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 20, "text": "الله عليك بجد رنا يهدينا كلنا ويهدي شباب المسلمين جميعا يارب العالمين", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 243, "out_tok": 3}
+{"i": 21, "text": "الله يبارك فيك لانك غيرت في صاحبتي كتير وهي من المتؤثرين فيك وهي اللي عرفتني عليك", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 249, "out_tok": 3}
+{"i": 22, "text": "الله يخزيكم عند امن الوطن مافي سلطي ولا كركي ولا طفيلي الاردن فوق الجميع قالوا بنحبك يا وطن رد عليهم الوطن بغصه حبوا بعضكم اول", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 264, "out_tok": 3}
+{"i": 23, "text": "الله يكثر الافراح", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 24, "text": "الله يلعن امك وش ها القرف", "gold": 0, "reply": "I apologize for any inconvenience, but I'm unable to assist with providing", "pred": -1, "finish": "length", "in_tok": 236, "out_tok": 16}
+{"i": 25, "text": "اللهم ارزقنا رزقا حلالا تغننا به عن حرامك", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 243, "out_tok": 3}
+{"i": 26, "text": "اللهم اغفر لي ما لا يعلمون اجعلني خيرا مما يظنون", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 27, "text": "اللهم اكثر من امثالك يا دكتور عمروالله نفسنا تشرفنا فى مسجد الصديق بشرتون هليوبوليس", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 250, "out_tok": 3}
+{"i": 28, "text": "اللهم القلوب الضاله", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 29, "text": "اللهم امليء قلبي بحبك", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 30, "text": "اللهم ان كان لي عوض على صبري", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 31, "text": "اللهم اني اسالك خشيه في السر والعلن", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 32, "text": "اللهم حسننا حسن اعمالنا ظاهرا باطنا لا تجعلنا نعمل الا ما يرضيك عنا برحمتك يا ارحم الراحمين", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 250, "out_tok": 3}
+{"i": 33, "text": "المغرب بريء منك على الاقل اذا كنت لهجتنا صعبه فتكلم باللغه العربيه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 244, "out_tok": 3}
+{"i": 34, "text": "المهم هو الصادق معي الناصح لي", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 35, "text": "الموضوع ما اله علاقه بالتخلف بس لما تكون الاضرار اكثر من الفائده بلا منه ا?هم من هيك انه المفاعل بحاجه لتبريد دائم للاسف وين المي يلي عنا؟؟؟؟", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 263, "out_tok": 3}
+{"i": 36, "text": "الوفاء اصبح شئ نادر يكاد يكون معدوم", "gold": 1, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 237, "out_tok": 3}
+{"i": 37, "text": "الي انا شايفو انو المفاعل راح ينعمل في الاردن راح يخدم دول تانيه يعني مش عشان سواد عيونا", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 252, "out_tok": 3}
+{"i": 38, "text": "اما في الدين فتصير اخوه في الله وهي ارقى العلاقات الانسانيه بصحيح الحديث رب اخ لم تلده امك", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 251, "out_tok": 3}
+{"i": 39, "text": "ان شاء الله وربنا يعيننا", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 40, "text": "انا اخدت قرار وبعدت عن معصيه لله وقدرت وربي وفقني", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 244, "out_tok": 3}
+{"i": 41, "text": "انا انصح كل انسان ان لايكذب لان الكذب مداه قصير", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 42, "text": "انا علي ثقه اني استطيع فعل اي شئ لاني انا من صنع الله", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 43, "text": "انا فعلا مؤمن بالفكره دي جدا وبحاول انفذها", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 44, "text": "انا لاحظت اللبنانيين انهم ماعندهم روح الكوميديا نهائيا", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 45, "text": "انتخب مين يا عم هى ناقصه لبخه فى الكلام معتش الا الاهبل ده كمان يبقى رئيس جمهوريه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 251, "out_tok": 3}
+{"i": 46, "text": "اندهش لما عرف الحقيقه", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 47, "text": "اهم شي الواسطه والمظهر الخارجي", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 48, "text": "اوغاد باعو البلد", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 49, "text": "برنامج معوق ومشاركين معوقين:", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 237, "out_tok": 3}
+{"i": 50, "text": "بس الحكام ماعندهم ذوق للاسف", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 51, "text": "تافهين جدا", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 52, "text": "تبتنا ياربن علي دكرك وشكرك حسن الخشوع في صلاتك", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 244, "out_tok": 3}
+{"i": 53, "text": "تحطم ماتبقى من اطيافي", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 54, "text": "تحيه لاهل فلسطين الغاليه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 55, "text": "ترى هاي فاهمه موضوع الوطنيه غلط ترى مش لحالك اردنيه والله اعلم اذا انك اردنيه اصلا شغل سوالف حصيده", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 253, "out_tok": 3}
+{"i": 56, "text": "تنظرون لا الشام يقتلون بدم بارد", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 57, "text": "جمهور لا يياس الى اخر ثانيه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 58, "text": "حزني كثير والله", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 59, "text": "حلمي ان اكون مثل سوشي", "gold": 1, "reply": "I apologize for any misunderstanding, but as an AI assistant, I am here", "pred": -1, "finish": "length", "in_tok": 235, "out_tok": 16}
+{"i": 60, "text": "خبار الموت تهز قلوبنا بعمق وسياتي اليوم الذي تهتز فيه قلوب من حولنا لموتنا ، يارب نسالك حُسن الختام ورضاك عنا", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 256, "out_tok": 3}
+{"i": 61, "text": "خبل معوق", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 62, "text": "خت قرار كتير وبرجع تاني بحاول اتغير ومش عرفه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 63, "text": "دعاء جميل ماشاء الله", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 64, "text": "دعواتك لنا يا شيخ سلمان بالتوفيق الفلاح الظفر حسن الخاتمه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 65, "text": "دمرني النصاني هودعيك يربي بطني", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 240, "out_tok": 3}
+{"i": 66, "text": "رائع ولاجمل ?حب ربنا", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 67, "text": "ربنا لا تزغ قلوبنا بعد ان هديتنا", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 68, "text": "ربنا يباركلك يا استاذي يعزك", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 69, "text": "ربنا يستر واخلاق المتاسلمين لا ترجعه مره اخرى", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 70, "text": "ربنا يقدرنى ويعفو عنى", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 71, "text": "ربنايحفظك ياشيخ", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 234, "out_tok": 3}
+{"i": 72, "text": "رضيت بالله ربا وبالاسلام دينا وبمحمد صلى الله عليه وسلم نبيا ورسولا", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 245, "out_tok": 3}
+{"i": 73, "text": "سوبر طقاع اول واحد جايته زبيريه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 239, "out_tok": 3}
+{"i": 74, "text": "شفتها اقول وشذا الكيك", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 234, "out_tok": 3}
+{"i": 75, "text": "شو بالا يا دانيا المشكله مش عارفه تكتب هعهعه", "gold": 0, "reply": "يبدو أن النص غير واضح. إذا كنت تريد مناقشة مشكلة أو التعبير عن مشاعر،", "pred": -1, "finish": "length", "in_tok": 241, "out_tok": 16}
+{"i": 76, "text": "شو هاد البرنامج معقول عرضوه على القنوات", "gold": 0, "reply": "يبدو أنك تسأل عن برنامج معين ومدى واقعيته. كمساعد ذكاء اصطناعي", "pred": -1, "finish": "length", "in_tok": 237, "out_tok": 16}
+{"i": 77, "text": "شو هالغباء فضحتنا", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 78, "text": "صادقه وفنانه من الزمن الجميل والفن اخلاق واحساسها يدرس", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 79, "text": "صار بدها بطاريه التقوى شحن", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 80, "text": "صباح الدرب للجنه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 81, "text": "صباح الدرب للجنه وبلبل شادى بفنه وريحه الياس والحنه اقولها لكل احبابي اللهم اجعلنا ممن يتمتعون بروح وريحان وجنه النعيم من الرحمن", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 262, "out_tok": 3}
+{"i": 82, "text": "صباح العسل", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 231, "out_tok": 3}
+{"i": 83, "text": "صباح النور السرور الورد المنثور", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 84, "text": "صباح الوفاء لك يا صديقي", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 234, "out_tok": 3}
+{"i": 85, "text": "صباحكم امل مشرق عطا متجدد كما شروق الشمس", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 237, "out_tok": 3}
+{"i": 86, "text": "صبحكم الله ياهل الطيب بالخير يسعد ضحاكم الظهر العشيه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 87, "text": "صح لسانك", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 231, "out_tok": 3}
+{"i": 88, "text": "صراع متصاعد للهيمنه على سوق الالمنيوم العالميه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 240, "out_tok": 3}
+{"i": 89, "text": "ضحكت طفل بسمه امل", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 234, "out_tok": 3}
+{"i": 90, "text": "طبعا اكيد والف", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 91, "text": "طريق واحد عدم اليئس هو طريق النجاح", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 237, "out_tok": 3}
+{"i": 92, "text": "طلعوا العرب اخس واخس واخس", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 93, "text": "عالم فاضيه بيسمو الغناء فن بيشغلو الناس", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 239, "out_tok": 3}
+{"i": 94, "text": "عرب اغبياء", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 95, "text": "عظيم هو اسلامنا", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 96, "text": "عنجد بخزي", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 97, "text": "عيش زي ما بدك ما ترد على حدا ابدا", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 98, "text": "فاظفر بذات الدين تربت يداك", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 237, "out_tok": 3}
+{"i": 99, "text": "فاقد لكل معاني الاحساس", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 100, "text": "فشرت عين الشيعه والله بنحرقهم حر", "gold": 0, "reply": "I'm sorry, but I can't assist with that. If you", "pred": -1, "finish": "length", "in_tok": 239, "out_tok": 16}
+{"i": 101, "text": "فشرت عينك", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 102, "text": "فعلا البت جده لما تحتاج ليه هو الانسان الصادق هو البستاهل تضحي عشان", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 245, "out_tok": 3}
+{"i": 103, "text": "فعلا والله هو القرار والثبات عليه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 104, "text": "فى ناس كتير ربنا كرمهم بنعمه الاسلام ولكنها لا تدرك قيمتها", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 105, "text": "قصه رائعه افادك الله من العلم لتفيدنا دائما", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 240, "out_tok": 3}
+{"i": 106, "text": "قلت ادب", "gold": 0, "reply": "I apologize if my response did not meet your expectations. As an AI, I", "pred": -1, "finish": "length", "in_tok": 231, "out_tok": 16}
+{"i": 107, "text": "كارثه بشريه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 108, "text": "كان خطاي الوحيد، اعطيت من لا يستحق اكثر من حقه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 109, "text": "كتكوت ضعيف الجناح الدنيا غدرت ها", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 237, "out_tok": 3}
+{"i": 110, "text": "كرهت كلمه نازح، لاجئ، ازمه، وضع، توره، تاريخ، جغرافيا", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 247, "out_tok": 3}
+{"i": 111, "text": "كل شئ في حب الله تهون وحب ربنا اقوى بكتير من اى حاجه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 244, "out_tok": 3}
+{"i": 112, "text": "كل واحد حرامي ما بهمو مصلحه المسكين المواطن الي بشتغل 14ساعه 6دنانير", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 252, "out_tok": 3}
+{"i": 113, "text": "كل يوم يصدمنا الاعلام بنتائج رقميه مجهوله المصدر والتوثيق والاستقراء حول التعليم في الاردن لتبرروا تغير المناهج المخزي لا لن تخدعونا", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 261, "out_tok": 3}
+{"i": 114, "text": "كلام جميل", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 231, "out_tok": 3}
+{"i": 115, "text": "كلنا ما انتصرنا على نفسنا وعلى الحاجه ددي الي متعبتنا ومبعدتنا عن الله", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 248, "out_tok": 3}
+{"i": 116, "text": "كنا نقول عاهات", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 117, "text": "كيف لا احبه و في كل مساء يهديني شيئا من روحه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 118, "text": "كيف يجتمع ستر وغض البصر", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 119, "text": "لعن الله المتشبهين من الرجال للنساء", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 237, "out_tok": 3}
+{"i": 120, "text": "لقد اتحفتمونا بلجوكم لجيبتنا التي انفجرت بفضلكم الفاسدين يتنعمون باموالنا فهل اصبح فاسدا لاعيش", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 257, "out_tok": 3}
+{"i": 121, "text": "لقد اسمعت لو ناديت حيا.. ولكن لا حياه لمن تنادي ولو نارا نفخت بها اضاءت .ولكن انت تنفخ في الرماد", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 257, "out_tok": 3}
+{"i": 122, "text": "لكن هذا البرنامج السخيف الرخيص واضح التمثيل فيه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 239, "out_tok": 3}
+{"i": 123, "text": "للي مفكرين المفاعل راح يطورهم المفاعل راح يدمر الاردن المنطقه اللي حولها لان الفساد الموجود بالاردن مش موجود بدوله اخرى هذا يعني ان الفاسدين رايحين يسمسروا يلهفوا لما يوصلوا اشكل مفاعل للاردن ناسين ان المفاعل يحتاج الى بحر ماء للتبريد نحن لانملك ماء للشرب ناسين ان التطور يكون بمشاركه الجميع ليس بقرار فردي ناسين ان الذي اقر المفاعل هو المحتكر الاول هيئه الطاقه ان شاغرها بقي معلق اثناء فتره تسلم طوقان وزاره التربيه والتعليم لدول المتقدمه بدات تبحث عن بدائل للمفاعلات نحن بنشتري الخربان منهم مشان التقدم بلدنا بفضل الله لديها طاقه الرياح طاقه الشمس لماذا لا يتم استغلالها بدل المفاعل النووي طالما اكلنا معظمه فاسد غير صالح بسبب الجشع الطمع الفساد", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 380, "out_tok": 3}
+{"i": 124, "text": "ما في احلى من الفرح", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 234, "out_tok": 3}
+{"i": 125, "text": "ما في احلى من انه الواحد يوكل وينام", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 239, "out_tok": 3}
+{"i": 126, "text": "ما في داعي لمصايب جديده للبشر وللبيئه", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 240, "out_tok": 3}
+{"i": 127, "text": "ما يستحون هم جايين لو انا منهم اروح اقشر بصل", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 128, "text": "مثال جميل جدا عبره لكل من يحمل رساله الاسلام", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 129, "text": "مش عاجبو الوضع الي هو فيه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 130, "text": "مش عارف كيف الناس بتحبك يا زلمه؟", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 239, "out_tok": 3}
+{"i": 131, "text": "معلم في حقيقه عمله هو مدرب يدرب طلاب على اكتساب المعرفه لا مجرد تلقيها", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 245, "out_tok": 3}
+{"i": 132, "text": "ملعوب عليهم", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 133, "text": "من قلت الذوق هذه الافعال", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 234, "out_tok": 3}
+{"i": 134, "text": "مهزله ياعيب الشووم", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 135, "text": "مهيه خربانه ان شاء الله يعملو مفاعل قرد بطلت تفرق", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 243, "out_tok": 3}
+{"i": 136, "text": "موضوع اكتر من رائع", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 137, "text": "مين اللي ضاحك عليهم وقايل ان اصواتهم حلوه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 240, "out_tok": 3}
+{"i": 138, "text": "ناس عزيزه المعزه لهم غير فيهم صفات الصالحين العليه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 139, "text": "نحن بنتهاوش مع الكتب", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 140, "text": "نحن في زمن يهان فيه المرء ويكرم فيه الكلب", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 240, "out_tok": 3}
+{"i": 141, "text": "نحن ما بدنا اياه لانا ما منفهم المفاعل النووي فوق طاقتنا صعب علينا بكره بذكركم سالوا الباص السريع الثقه معدومه القمح فاسد المصفاه مش حسب المواصفات الخضار الفواكه مواد كيماويه شوارع مش مصانه حفر مطبات الخ الافضل استغلال الطاقه الشمسيه او الريح او الماء ليس هروب من التطور انما الابتعاد عن الفشل الاكيد عبر التجارب", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 299, "out_tok": 3}
+{"i": 142, "text": "نعم والحمد لله", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 143, "text": "نفسي اروح عمره واشوف الكعبه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 144, "text": "هذا اللي بالنص من لجنه الحكم مفكر نفسو وديع الصافي هو شقفه علاك", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 247, "out_tok": 3}
+{"i": 145, "text": "هذا انا واغني وانا بالحمام وانتوا بكرامه صوتي احلا من العاهات هذيل", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 247, "out_tok": 3}
+{"i": 146, "text": "هذا تشهير ملعون والدين المفروض ما يعرضونه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 239, "out_tok": 3}
+{"i": 147, "text": "هذا صدق ولا مجنون ولا يستهبل وش القصه", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 148, "text": "هذا هو الحب الاصيل الوفي بكل معنى الوفاء", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 238, "out_tok": 3}
+{"i": 149, "text": "هذا هو المهم", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 150, "text": "هذه البرامج اللي تخلف العاهات للفن الهابط فن اليومين هذا", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 151, "text": "هذول مساجين ولا ايش", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 235, "out_tok": 3}
+{"i": 152, "text": "هو بن وسخه ادمان وبالذات لو متابع اخبار وحاجات يوميه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 243, "out_tok": 3}
+{"i": 153, "text": "و نرجو لك دوام الخير المحبه من الله من الناس", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 239, "out_tok": 3}
+{"i": 154, "text": "واثق من نفسه الحبيب", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 155, "text": "واحد هامل", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 156, "text": "وادم علينا يارب نعمه الامن والامان وسائر بلاد المسلمين", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 239, "out_tok": 3}
+{"i": 157, "text": "والله الواحد بيدعي كثيرا ان ربنا يجعلنا في طريق مستقيم", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 240, "out_tok": 3}
+{"i": 158, "text": "والله انك مهزله", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 159, "text": "والله حرام الناس مش لاقيه توكل حتى ترفعو البنزين", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 240, "out_tok": 3}
+{"i": 160, "text": "والله حرق لاخوات الكلب", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 234, "out_tok": 3}
+{"i": 161, "text": "والله شوي وتجيني جلطه لما ماطلعت الاولى ذيك المره", "gold": 0, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 162, "text": "والله عاهات", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 232, "out_tok": 3}
+{"i": 163, "text": "وربي كلبتي جات جلست عندي اول ما فتحت هالفيديو ويوم خلص التفت لها الا والاقيها نايمه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 249, "out_tok": 3}
+{"i": 164, "text": "وعلي الله قصد السبيل", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 165, "text": "ولك واحد كندره", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 233, "out_tok": 3}
+{"i": 166, "text": "يا الله استجب دعائي يالله مادكيت بابك يوم ورحعتني خاليه الوفاض", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 249, "out_tok": 3}
+{"i": 167, "text": "يا رب بناتنا شبابنا كلهم يستطيعوا العمل بهذه النصيحه يا ريتا كلنا نتذكر اننا كلنا دعاه للاسلام باخلاقيتنا الصفات الحسنه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 256, "out_tok": 3}
+{"i": 168, "text": "يا رب خد بيدنا يا جبرنا يا جبار السموات والارض", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 241, "out_tok": 3}
+{"i": 169, "text": "يا رب نستغفرك ونتوب اليك يا رب ما لنا سواك", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 170, "text": "يا رب يا خير الرازقين ارزق اهل سوريا جميع المسلمين النصر الثبات التقوى", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 244, "out_tok": 3}
+{"i": 171, "text": "يا رب يكرمنا باولادنا انا دائما بشجع ابني ان يكون كالجبل الذي لا تهزه الرياح العاتيه", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 254, "out_tok": 3}
+{"i": 172, "text": "يا ربي هذا مستحيل يكون كائن بشري", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 236, "out_tok": 3}
+{"i": 173, "text": "يا لله ارحم احبتي و شافيهم وعافيهم واعف عنهم", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 244, "out_tok": 3}
+{"i": 174, "text": "يارب اغفر لي ذنبي وارزقني حبك هو ربنا ممكن يكره حد لو فضل يكرر ذنبه بعد الاستغفار", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 248, "out_tok": 3}
+{"i": 175, "text": "يارب اهدي بنات وشباب المسلمين الي ما يرضيك عنهم وكفيهم شر فتن الدنيا والاخره", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 248, "out_tok": 3}
+{"i": 176, "text": "يتسابقون الى جهنم و باس المصير", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 237, "out_tok": 3}
+{"i": 177, "text": "يجب على المسلم ان يواسى اخوه فى الاسلام", "gold": 1, "reply": "positive ", "pred": 1, "finish": "stop", "in_tok": 239, "out_tok": 3}
+{"i": 178, "text": "يع بتقرف انت وسخ يع شوهاي الوساخه", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 242, "out_tok": 3}
+{"i": 179, "text": "يلعن ام الازعاج", "gold": 0, "reply": "negative ", "pred": 0, "finish": "stop", "in_tok": 233, "out_tok": 3}

@@ -1,0 +1,16 @@
+{
+  "tag": "gptoss-astd-test-en",
+  "model_id": "openai/gpt-oss-120b",
+  "date": "2026-10-27",
+  "prompt": "en",
+  "shots": 8,
+  "n": 242,
+  "macro_f1": 0.8265,
+  "macro_f1_ci95": [
+    0.7732,
+    0.8758
+  ],
+  "accuracy": 0.8058,
+  "invalid_rate": 0.0744,
+  "avg_in_tokens": 463
+}
