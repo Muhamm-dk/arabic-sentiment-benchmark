@@ -8,6 +8,8 @@ dependencies = [
     "accelerate>=1.15.0",
     "datasets>=5.1.0",
     "evaluate>=0.4.6",
+    "fastapi>=0.143.3",
+    "httpx>=0.28.1",
     "mlflow>=3.17.1",
     "numpy>=2.5.2",
     "pandas>=3.0.6",
@@ -15,6 +17,7 @@ dependencies = [
     "scikit-learn>=1.9.1",
     "torch>=2.11.0",
     "transformers>=5.20.1",
+    "uvicorn[standard]>=0.54.0",
 ]
 
 [build-system]
