@@ -1,0 +1,16 @@
+{
+  "tag": "gptoss-hard-test-en",
+  "model_id": "openai/gpt-oss-120b",
+  "date": "2026-10-28",
+  "prompt": "en",
+  "shots": 8,
+  "n": 300,
+  "macro_f1": 0.8664,
+  "macro_f1_ci95": [
+    0.8285,
+    0.9042
+  ],
+  "accuracy": 0.8633,
+  "invalid_rate": 0.01,
+  "avg_in_tokens": 541
+}

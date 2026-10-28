@@ -1,0 +1,16 @@
+{
+  "run": "combined-marbert-s0",
+  "dataset": "combined",
+  "model": "marbert",
+  "seed": 0,
+  "best_epoch": 2,
+  "val_macro_f1": 0.8984,
+  "test_macro_f1": 0.9004,
+  "test_macro_f1_ci95": [
+    0.8952,
+    0.9055
+  ],
+  "test_accuracy": 0.9004,
+  "n_test": 13412,
+  "peak_vram_gib": 5.18
+}

@@ -25,7 +25,7 @@ MODELS = {
     "marbert": "UBC-NLP/MARBERT",
     "xlmr": "FacebookAI/xlm-roberta-base",
 }
-MAX_LEN = {"labr": 256, "hard": 256, "hard_notitle": 256, "astd": 96, "ajgt": 96}
+MAX_LEN = {"labr": 256, "hard": 256, "hard_notitle": 256, "astd": 96, "ajgt": 96, "combined": 256}
 
 
 def set_seed(seed):
