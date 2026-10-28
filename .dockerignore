@@ -1,0 +1,9 @@
+.venv
+data
+outputs
+results
+mlruns
+mlflow.db
+notebooks
+.git
+__pycache__
