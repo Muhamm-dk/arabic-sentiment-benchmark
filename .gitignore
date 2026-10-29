@@ -11,3 +11,6 @@ outputs/
 mlflow.db
 .env
 results/*.log
+results/preds/
+results/llm/*.jsonl
+results/dialect_tags.parquet

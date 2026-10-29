@@ -7,7 +7,7 @@ Task: binary sentiment (negative vs positive) on all four datasets, so results a
 - Size: 11,760 train, 2,935 test (official). Full set: 63,257.
 - Labels: 1 to 5 stars (HF label index = stars minus 1). Binary: 1-2 negative, 4-5 positive, 3 dropped.
 - Variety: book reviews, mixed MSA and dialect.
-- License: not yet verified, check the dataset card.
+- License: not stated (Hugging Face card lists 'unknown' or nothing). Treat as research use; cite the original paper.
 - Notes: official split is exactly balanced (2,352 per class train, 587 per class test). Full set is skewed toward 5 stars (23,778 vs 2,939 for 1 star). 65 texts appear in both train and test, removed from test in the loader. 300 duplicate rows in the official data.
 
 ## HARD
@@ -16,7 +16,7 @@ Task: binary sentiment (negative vs positive) on all four datasets, so results a
 - Labels: ratings 1, 2, 4, 5 only (no 3 stars). Binary: 1-2 negative (52,849), 4-5 positive (52,849).
 - Variety: hotel reviews from Booking.com, MSA and dialect.
 - Format: tab-separated, UTF-16 little-endian with BOM and CRLF. Read with `encoding='utf-16', quoting=3`. Columns: no, Hotel name, rating, user type, room type, nights, review.
-- License: not yet verified, check the repo.
+- License: not stated in the repo readme files. Treat as research use; cite Elnagar et al. (2018).
 - Notes: 1,662 duplicate review texts, handled in the loader. No official split, so we create a seeded stratified split.
 
 ## ASTD
@@ -24,14 +24,14 @@ Task: binary sentiment (negative vs positive) on all four datasets, so results a
 - Size: 9,694 tweets, single train split (no official split).
 - Labels: Objective 6,470, Negative 1,642, Neutral 805, Positive 777. Binary keeps Negative and Positive only: 2,419 tweets, 68% negative.
 - Variety: tweets, mostly Egyptian dialect with some MSA.
-- License: not yet verified, check the dataset card.
+- License: not stated (Hugging Face card lists 'unknown' or nothing). Treat as research use; cite the original paper.
 
 ## AJGT
 - Source: Hugging Face `komari6/ajgt_twitter_ar`.
 - Size: 1,800 tweets, single train split (no official split), 900 positive and 900 negative.
 - Labels: Negative, Positive.
 - Variety: tweets, Jordanian dialect with some MSA.
-- License: not yet verified, check the dataset card.
+- License: not stated (Hugging Face card lists 'unknown' or nothing). Treat as research use; cite the original paper.
 ## Processing decisions
 - Binary label on all datasets (0 negative, 1 positive). Raw text is stored; model-specific preprocessing happens at training time.
 - Whitespace is normalized, exact duplicates are removed, texts with conflicting labels are dropped.
