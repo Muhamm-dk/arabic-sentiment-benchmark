@@ -9,7 +9,7 @@ from sklearn.metrics import f1_score
 ROOT = Path(__file__).resolve().parents[2]
 ORDER = ["ajgt", "astd", "labr", "hard", "hard_notitle"]
 LLMS = ["qwen", "gptoss", "allam"]
-ENCODERS = ["arabert", "marbert", "xlmr"]
+ENCODERS = ["tfidf", "arabert", "marbert", "xlmr"]
 
 
 def main():
