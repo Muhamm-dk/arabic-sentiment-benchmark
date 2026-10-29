@@ -1,0 +1,16 @@
+{
+  "tag": "qwen-hard_notitle-test-en",
+  "model_id": "qwen/qwen3.8-27b",
+  "date": "2026-10-29",
+  "prompt": "en",
+  "shots": 8,
+  "n": 300,
+  "macro_f1": 0.8622,
+  "macro_f1_ci95": [
+    0.8221,
+    0.9022
+  ],
+  "accuracy": 0.8633,
+  "invalid_rate": 0.0,
+  "avg_in_tokens": 487
+}
