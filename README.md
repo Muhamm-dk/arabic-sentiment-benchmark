@@ -94,6 +94,15 @@ curl -X POST localhost:8000/predict -H "Content-Type: application/json" -d '{"te
 
 Endpoints: `GET /health`, `POST /predict`, `POST /predict_batch` (max 32 texts), docs at `/docs`. CPU image of about 1.8 GB, weights pulled from the Hub at startup. There is no authentication or rate limiting, and no public deployment.
 
+## Deployment
+
+Deployed on Azure Container Apps (consumption plan, scale to zero, 1 vCPU / 2 GiB), image from GitHub Container Registry.
+Endpoint: `https://arabic-sentiment-api.niceflower-4ddb1508.uaenorth.azurecontainerapps.io`
+`/predict` and `/predict_batch` require an `X-API-Key` header; ask the author for a demo key. `/health` is open.
+The first request after idle takes longer while the container starts and loads the model. This is a portfolio demo
+with a single shared key and no rate limiting, and it may be taken down when the student credit expires.
+Measured cold start from scale-to-zero: about 27 s (container start plus model download). Warm requests: under 1 s round trip.
+
 ## Limitations
 
 - Binary task only; neutral and factual text is forced into a polarity.
