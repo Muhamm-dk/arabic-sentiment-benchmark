@@ -4,7 +4,8 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 import torch
-from fastapi import FastAPI, HTTPException
+import secrets
+from fastapi import Depends, FastAPI, Header, HTTPException
 from pydantic import BaseModel, Field
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
@@ -13,6 +14,12 @@ MODEL_VERSION = os.environ.get("MODEL_VERSION", "combined-marbert-s0")
 MAX_LEN, MAX_BATCH, MAX_CHARS = 256, 32, 5000
 LABELS = {0: "negative", 1: "positive"}
 state = {}
+
+
+def require_key(x_api_key: str | None = Header(default=None)):
+    expected = os.environ.get("API_KEY")
+    if expected and not secrets.compare_digest((x_api_key or "").encode(), expected.encode()):
+        raise HTTPException(401, "invalid or missing API key")
 
 
 @asynccontextmanager
@@ -57,14 +64,14 @@ def health():
     return {"status": "ok", "device": state.get("device"), "model_version": MODEL_VERSION}
 
 
-@app.post("/predict")
+@app.post("/predict", dependencies=[Depends(require_key)])
 def predict(item: Item):
     if not item.text.strip():
         raise HTTPException(422, "text is blank")
     return classify([item.text])[0]
 
 
-@app.post("/predict_batch")
+@app.post("/predict_batch", dependencies=[Depends(require_key)])
 def predict_batch(batch: Batch):
     if any(not t.strip() or len(t) > MAX_CHARS for t in batch.texts):
         raise HTTPException(422, f"each text must be non-blank and at most {MAX_CHARS} characters")
