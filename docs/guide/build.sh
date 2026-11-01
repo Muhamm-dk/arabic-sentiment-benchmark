@@ -2,6 +2,7 @@
 # Build the guide: Markdown chapters -> one HTML file (print to PDF from the browser).
 # Run from docs/guide:  ./build.sh
 set -e
+cd "$(dirname "$0")"
 mkdir -p build
 cat > build/style.css <<'CSS'
 body { font-family: "Segoe UI", Tahoma, Arial, sans-serif; max-width: 52rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.65; }

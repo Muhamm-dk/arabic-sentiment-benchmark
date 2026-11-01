@@ -32,6 +32,7 @@ Task: binary sentiment (negative vs positive) on all four datasets, so results a
 - Labels: Negative, Positive.
 - Variety: tweets, Jordanian dialect with some MSA.
 - License: not stated (Hugging Face card lists 'unknown' or nothing). Treat as research use; cite the original paper.
+
 ## Processing decisions
 - Binary label on all datasets (0 negative, 1 positive). Raw text is stored; model-specific preprocessing happens at training time.
 - Whitespace is normalized, exact duplicates are removed, texts with conflicting labels are dropped.
@@ -48,3 +49,6 @@ Task: binary sentiment (negative vs positive) on all four datasets, so results a
 
 ## HARD descriptor leak
 Most HARD reviews begin with a one or two word segment (for example استثنائي, ضعيف جداً, مخيب للأمل) that maps almost one-to-one to a single star level (استثنائي is 5 stars in 6,724 of 6,727 reviews). This is consistent with Booking.com score labels, not yet verified against the paper. TF-IDF + logistic regression (random split, deduplicated) reaches macro-F1 0.937 on raw text and 0.840 with the leading segment crudely removed. Two variants are benchmarked on identical rows and splits: `hard` (as released, leaky upper bound) and `hard_notitle` (descriptor removed by exact match on a fixed list of 9 phrases, conservative lower bound).
+
+## Known issue: ASTD copy
+`arbml/ASTD` was compared with `Qanadil/ASTD_Arabic_Sentiment_Tweets_Dataset`, whose 3,315 subjective tweets match the count reported for the original. 3,186 texts match exactly and all labels agree. 95 of Qanadil's 2,483 binary tweets (3.8%) have no exact match in `arbml`, and 31 binary tweets of `arbml` have none in Qanadil. Positive share is 32.1% vs 32.2%. Kept `arbml`; effect expected to be within noise (not measured).
