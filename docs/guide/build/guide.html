@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Arabic Sentiment Benchmark: The Guide</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">body { font-family: "Segoe UI", Tahoma, Arial, sans-serif; max-width: 52rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.65; }
+code, pre { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 0.9em; }
+pre { background: #f5f5f5; padding: 0.8rem; overflow-x: auto; white-space: pre-wrap; }
+table { border-collapse: collapse; margin: 1rem 0; } td, th { border: 1px solid #999; padding: 0.3rem 0.6rem; }
+h1 { page-break-before: always; } h1:first-of-type { page-break-before: avoid; }
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Arabic Sentiment Benchmark: The Guide</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#chapter-0-how-to-use-this-guide" id="toc-chapter-0-how-to-use-this-guide">Chapter 0: How to use this
+guide</a>
+<ul>
+<li><a href="#what-this-guide-is" id="toc-what-this-guide-is">What this
+guide is</a></li>
+<li><a href="#chapter-template" id="toc-chapter-template">Chapter
+template</a></li>
+<li><a href="#repo-map" id="toc-repo-map">Repo map</a></li>
+<li><a href="#glossary" id="toc-glossary">Glossary</a></li>
+<li><a href="#how-to-read-the-numbers" id="toc-how-to-read-the-numbers">How to read the numbers</a></li>
+<li><a href="#check-yourself" id="toc-check-yourself">Check
+yourself</a></li>
+</ul></li>
+<li><a href="#chapter-1-objective-and-plan" id="toc-chapter-1-objective-and-plan">Chapter 1: Objective and plan</a>
+<ul>
+<li><a href="#what" id="toc-what">What</a></li>
+<li><a href="#the-original-brief" id="toc-the-original-brief">The
+original brief</a></li>
+<li><a href="#why-this-project" id="toc-why-this-project">Why this
+project</a></li>
+<li><a href="#alternatives-to-this-project-framing" id="toc-alternatives-to-this-project-framing">Alternatives to this
+project framing</a></li>
+<li><a href="#the-plan" id="toc-the-plan">The plan</a></li>
+<li><a href="#what-actually-happened-versus-the-plan" id="toc-what-actually-happened-versus-the-plan">What actually happened
+versus the plan</a></li>
+<li><a href="#numbers-the-project-in-one-table" id="toc-numbers-the-project-in-one-table">Numbers: the project in one
+table</a></li>
+<li><a href="#what-success-looks-like" id="toc-what-success-looks-like">What success looks like</a></li>
+<li><a href="#check-yourself-1" id="toc-check-yourself-1">Check
+yourself</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="chapter-0-how-to-use-this-guide">Chapter 0: How to use this
+guide</h1>
+<h2 id="what-this-guide-is">What this guide is</h2>
+<p>A study guide for one project: a benchmark of Arabic sentiment
+analysis, built from an empty folder to a deployed API. Every chapter
+explains what was done, why, what else was possible, how it was
+implemented, what broke, and what the numbers say. It is written for the
+author to study from, not as a tutorial for strangers.</p>
+<p>Two kinds of statements appear throughout, and the guide keeps them
+apart:</p>
+<ul>
+<li><strong>Measured here:</strong> numbers and behaviors produced by
+our own runs (for example, “TF-IDF scored 0.9411 on HARD”).</li>
+<li><strong>General knowledge:</strong> claims about other datasets,
+models or tools that were not run in this project. These are marked, and
+anything not checked is flagged as unverified.</li>
+</ul>
+<p>If a sentence in a chapter says “I did not test this”, take it
+literally.</p>
+<h2 id="chapter-template">Chapter template</h2>
+<p>Each chapter uses the same sections:</p>
+<ol type="1">
+<li><strong>What</strong>: the step, in a few lines.</li>
+<li><strong>Why</strong>: the decision and the evidence behind it.</li>
+<li><strong>Alternatives</strong>: what else was possible and why it
+lost.</li>
+<li><strong>How</strong>: the core code, explained piece by piece.
+Boilerplate stays in the repo.</li>
+<li><strong>What went wrong</strong>: real bugs and detours.</li>
+<li><strong>Numbers</strong>: results from our runs.</li>
+<li><strong>Check yourself</strong>: questions an interviewer could
+ask.</li>
+</ol>
+<h2 id="repo-map">Repo map</h2>
+<pre><code>arabic-sentiment-benchmark/
+  pyproject.toml, uv.lock        environment (uv), pinned dependencies
+  Dockerfile, .dockerignore      CPU inference image
+  run_stage1.sh .. run_stage3.sh, run_xlmr_tuned.sh   training runners
+  run_llm_queue.sh               resumable LLM evaluation runner
+  src/arabic_sentiment/
+    data.py                      build unified, deduplicated, split datasets
+    baseline.py, baseline_preds.py   TF-IDF + logistic regression
+    finetune.py                  encoder fine-tuning with MLflow
+    llm_eval.py                  few-shot LLM evaluation (Groq)
+    compare.py, report.py        results tables
+    dialect.py, dialect_analysis.py  dialect tagging and per-dialect scores
+    combined.py, combined_report.py  the combined-data model
+    serve/app.py                 FastAPI service
+  tests/                         API and auth tests
+  docs/                          datasets.md, error_analysis.md, interview_notes.md, guide/
+  results/                       score files (.json, .csv); prediction files are not tracked
+  data/                          raw and processed data (not tracked)</code></pre>
+<p>Files that contain dataset texts (<code>results/preds/</code>,
+<code>results/llm/*.jsonl</code>,
+<code>results/dialect_tags.parquet</code>, everything under
+<code>data/</code>) are not tracked in git because the datasets do not
+state licenses. Scripts that read them need the pipeline rerun
+first.</p>
+<h2 id="glossary">Glossary</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Meaning in this project</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Macro-F1</strong></td>
+<td>Mean of the F1 score of each class. With two classes, it weighs
+negative and positive equally, so ignoring the minority class is
+punished.</td>
+</tr>
+<tr class="even">
+<td><strong>MSA</strong></td>
+<td>Modern Standard Arabic, the formal written variety.</td>
+</tr>
+<tr class="odd">
+<td><strong>Dialect</strong></td>
+<td>Regional spoken and informal written varieties (Egyptian, Jordanian,
+Gulf and others).</td>
+</tr>
+<tr class="even">
+<td><strong>Encoder</strong></td>
+<td>A BERT-style transformer that turns text into vectors. Here
+fine-tuned with a classification head.</td>
+</tr>
+<tr class="odd">
+<td><strong>Fine-tuning</strong></td>
+<td>Continuing training of a pretrained model on a labeled task.</td>
+</tr>
+<tr class="even">
+<td><strong>Few-shot</strong></td>
+<td>Giving an LLM a handful of labeled examples in the prompt, without
+training.</td>
+</tr>
+<tr class="odd">
+<td><strong>TF-IDF</strong></td>
+<td>A text representation that weights terms by how rare they are across
+documents.</td>
+</tr>
+<tr class="even">
+<td><strong>Bootstrap CI</strong></td>
+<td>A confidence interval from resampling test predictions with
+replacement (1,000 or 500 resamples here).</td>
+</tr>
+<tr class="odd">
+<td><strong>Seed</strong></td>
+<td>The random number generator setting. Different seeds give slightly
+different trained models.</td>
+</tr>
+<tr class="even">
+<td><strong>Leakage</strong></td>
+<td>Information in the input that gives away the label, or the same
+example appearing in train and test.</td>
+</tr>
+<tr class="odd">
+<td><strong>Descriptor</strong></td>
+<td>The leading Booking.com score label in HARD reviews (Chapter
+5).</td>
+</tr>
+<tr class="even">
+<td><strong>VRAM</strong></td>
+<td>GPU memory. 8 GB on this laptop, about 6.5 GiB usable.</td>
+</tr>
+<tr class="odd">
+<td><strong>bf16</strong></td>
+<td>A 16-bit number format with the range of 32-bit floats, used for
+training.</td>
+</tr>
+<tr class="even">
+<td><strong>Invalid rate</strong></td>
+<td>Share of LLM replies that were not a usable label. Counted as
+errors.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-to-read-the-numbers">How to read the numbers</h2>
+<ul>
+<li>Macro-F1 values are on a 0 to 1 scale.</li>
+<li>ASTD (242 test rows) and AJGT (180) are small. A bootstrap interval
+there is about plus or minus 4 to 5 points, so smaller gaps are
+noise.</li>
+<li>HARD and LABR encoder runs are single seed, and the LLM comparison
+on those two uses 300-row samples. Those 300-row numbers are not
+comparable with full-test numbers.</li>
+<li>“Tuned” XLM-R means one fixed alternative configuration, not a
+search.</li>
+</ul>
+<h2 id="check-yourself">Check yourself</h2>
+<ol type="1">
+<li>Why does this guide separate “measured here” from “general
+knowledge”?</li>
+<li>Why are prediction files not committed to git?</li>
+<li>Why can you not rank two models on ASTD if they differ by 2
+points?</li>
+</ol>
+<h1 id="chapter-1-objective-and-plan">Chapter 1: Objective and plan</h1>
+<h2 id="what">What</h2>
+<p>Build a benchmark of Arabic sentiment analysis across Modern Standard
+Arabic and dialects, then turn the best model into a deployed service.
+The project is a portfolio piece for ML Engineer and AI Engineering
+roles at UAE employers, so it has to show both research discipline (fair
+comparisons, honest limits) and engineering (tracking, tests,
+containers, deployment).</p>
+<h2 id="the-original-brief">The original brief</h2>
+<p>These were the requirements at the start, in the author’s words
+condensed:</p>
+<ul>
+<li>Datasets: LABR, HARD, ASTD, AJGT.</li>
+<li>Models: fine-tuned encoders (AraBERT, MARBERT, XLM-R) versus a
+few-shot Arabic-capable LLM (Jais or similar).</li>
+<li>A TF-IDF + logistic regression baseline, a results table, and an
+error analysis focused on dialect failures.</li>
+<li>A FastAPI service, containerized with Docker, and deployed.</li>
+<li>Experiment tracking with MLflow or Weights &amp; Biases.</li>
+<li>A clean GitHub repo with about 12 meaningful commits and a strong
+README.</li>
+<li>Constraints: a Lenovo LOQ laptop (RTX 5070, 8 GB VRAM, 32 GB RAM,
+Windows 11 with WSL2), free Kaggle and Colab GPUs as overflow, 3 to 4
+weeks.</li>
+</ul>
+<h2 id="why-this-project">Why this project</h2>
+<p><strong>Why sentiment analysis?</strong> It is a small,
+well-understood task, so the effort goes into method (data quality,
+evaluation, comparison) and not into task definition. Labels exist in
+public datasets, and the problem is simple enough for one laptop.</p>
+<p><strong>Why Arabic with dialects?</strong> Arabic is a strong fit for
+UAE employers, and dialect variation is a real engineering problem: one
+language, many written varieties, and spelling that is not standardized.
+A benchmark that covers both MSA and dialect is more informative than
+one that covers either alone.</p>
+<p><strong>Why a benchmark, and not a single model?</strong> A single
+model with a good score says little. The value is in the comparison:
+what does a fine-tuned encoder buy over TF-IDF, and how does a prompted
+LLM compare? And in the discipline around it: same rows, same splits,
+uncertainty reported.</p>
+<p><strong>Why serve and deploy it?</strong> Employers for ML
+engineering roles want to see a model leave the notebook. Serving,
+containerizing, testing and deploying show that.</p>
+<h2 id="alternatives-to-this-project-framing">Alternatives to this
+project framing</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Alternative</th>
+<th>Why it lost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>One model, one dataset, one score</td>
+<td>Easy, but nothing to defend and nothing to learn from</td>
+</tr>
+<tr class="even">
+<td>3-class sentiment (adding neutral)</td>
+<td>Cleaner for real use, but AJGT has no neutral class and 3-star
+reviews are ambiguous, so scores would not be comparable across
+datasets</td>
+</tr>
+<tr class="odd">
+<td>A larger, newer LLM-only study</td>
+<td>Cheaper to run, but free API caps limit test size, and it skips
+fine-tuning, which the roles value</td>
+</tr>
+<tr class="even">
+<td>Training from scratch</td>
+<td>Pointless at this data size; pretrained models do far better</td>
+</tr>
+<tr class="odd">
+<td>Many datasets (10 or more)</td>
+<td>Dilutes the analysis. Four datasets already span two domains and
+several dialects</td>
+</tr>
+</tbody>
+</table>
+<p>Whether better datasets or models exist is covered where they matter,
+in Chapters 3 and 8.</p>
+<h2 id="the-plan">The plan</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Week</th>
+<th>Focus</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Data and baseline</td>
+<td>Four datasets in one schema, fixed splits, TF-IDF baseline
+logged</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Encoder fine-tuning</td>
+<td>AraBERT, MARBERT, XLM-R on all datasets, first full results
+table</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>LLM few-shot and error analysis</td>
+<td>LLM runs, dialect analysis, error write-up</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Serving and polish</td>
+<td>FastAPI, Docker, deployment, README with honest limitations</td>
+</tr>
+</tbody>
+</table>
+<p>Principles that governed every step:</p>
+<ol type="1">
+<li><strong>Same rows for every system.</strong> Differences between
+models must come from the models, not from the data they saw.</li>
+<li><strong>Validation picks, test judges.</strong> Epochs, prompts and
+configurations are chosen on the validation split, and test is scored
+once per final model.</li>
+<li><strong>Report uncertainty.</strong> Bootstrap intervals, several
+seeds where test sets are tiny.</li>
+<li><strong>Report what failed.</strong> Leaks, bugs and weak results go
+in the write-up.</li>
+<li><strong>Decide before looking.</strong> Where a choice could be
+tuned toward a good-looking result (the prompt language, the tuned XLM-R
+configuration), the rule was fixed in advance.</li>
+</ol>
+<h2 id="what-actually-happened-versus-the-plan">What actually happened
+versus the plan</h2>
+<ul>
+<li><strong>Jais was replaced by ALLaM.</strong> Jais 13B does not fit
+on the laptop, and the Kaggle route needed custom model code and 4-bit
+loading that I could not verify would work. ALLaM, an Arabic-specialist
+model, was available on the Groq API, so it filled the same role with
+much less risk. The Kaggle option was dropped.</li>
+<li><strong>Two extra LLMs.</strong> Qwen and gpt-oss ran alongside
+ALLaM, giving a general-purpose comparison.</li>
+<li><strong>The LLM phase took days, not hours.</strong> Free-tier caps
+of 200,000 tokens per day per model turned a one-evening job into
+several days of resumed runs (Chapter 11).</li>
+<li><strong>A data leak changed the evaluation.</strong> HARD’s leading
+score label inflated every score, so HARD became two benchmark variants
+(Chapter 5).</li>
+<li><strong>Deployment moved clouds.</strong> Hugging Face Docker Spaces
+were not selectable on a free account, so the service runs on Azure
+Container Apps (Chapter 18).</li>
+<li><strong>Commit count.</strong> The repo has more than the planned 12
+commits, because the project grew.</li>
+</ul>
+<h2 id="numbers-the-project-in-one-table">Numbers: the project in one
+table</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>TF-IDF</th>
+<th>Best encoder</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>LABR</td>
+<td>0.8155</td>
+<td>MARBERT 0.8799</td>
+<td>single seed</td>
+</tr>
+<tr class="even">
+<td>HARD (as released)</td>
+<td>0.9411</td>
+<td>AraBERT 0.9568</td>
+<td>inflated by the leak</td>
+</tr>
+<tr class="odd">
+<td>HARD (descriptor removed)</td>
+<td>0.8710</td>
+<td>AraBERT 0.9067</td>
+<td>the honest HARD number</td>
+</tr>
+<tr class="even">
+<td>ASTD</td>
+<td>0.7708</td>
+<td>MARBERT 0.8902</td>
+<td>3-seed mean, small test set</td>
+</tr>
+<tr class="odd">
+<td>AJGT</td>
+<td>0.8722</td>
+<td>MARBERT 0.9277</td>
+<td>3-seed mean, small test set</td>
+</tr>
+</tbody>
+</table>
+<p>Macro-F1 on the full test splits. HARD encoder runs used a
+20,000-review training subsample.</p>
+<h2 id="what-success-looks-like">What success looks like</h2>
+<p>Not “highest score”, but:</p>
+<ul>
+<li>Every number can be reproduced from the repo.</li>
+<li>Every comparison is on identical rows and every gap is judged
+against its noise.</li>
+<li>Every limitation is written down.</li>
+<li>The deployed service works, is tested, and is protected by a
+key.</li>
+</ul>
+<h2 id="check-yourself-1">Check yourself</h2>
+<ol type="1">
+<li>Why was the project framed as a benchmark, and not as one model with
+one score?</li>
+<li>Why was binary sentiment chosen over three classes?</li>
+<li>What does “validation picks, test judges” prevent?</li>
+<li>Why was ALLaM used in place of Jais, and what was lost?</li>
+<li>Name two decisions that were fixed before looking at results, and
+why that matters.</li>
+</ol>
+</body>
+</html>
