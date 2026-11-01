@@ -138,7 +138,7 @@ def strip_descriptor(text):
 - `text.partition(".")` returns `(before first period, ".", after)`. HARD reviews start with a short segment ended by a period.
 - The head is compared against nine exact phrases after stripping spaces and quote marks.
 - If it matches, the text after the first period is returned, without leading spaces or periods. If it does not match, the text is unchanged.
-- The nine phrases came from a table of first segments against star rating (Chapter 5).
+- The nine phrases came from a table of first segments against star rating (Chapter 5). Eight of them occur as unquoted labels. مقبول occurs only inside quotes, so it is a user title and should not be in the list.
 
 ### Loading HARD
 
@@ -201,8 +201,8 @@ Every build asserts no text appears in two splits and, for HARD, no hotel appear
 | Size drop larger than predicted | I predicted about 1,662 removed rows. The build removed 2,664 (105,698 to 103,034), because stripping the descriptor creates new duplicates and short remainders. I did not break the 2,664 down by cause |
 | LABR leak numbers | I first reported 65 texts shared by train and test. After dropping 3-star rows and deduping, the build printed 2,338 test rows reduced to 2,283, so 55 |
 | Package not importable | The build-system block in `pyproject.toml` was duplicated and had to be rewritten (Chapter 2). Separately, a pasted heredoc never created `data.py` once |
-| **The descriptor rule is blunt** | The matcher removes quote marks before comparing, so a quoted user title equal to a descriptor word is stripped like an auto label. Example: row 0 of the raw file, a 2-star review starting `“ممتاز”`. Some of the 46,990 matched rows are user titles |
-| **Unmatched rows keep their leading segment** | About 56% of rows are not matched by the nine phrases and keep whatever starts them, which may still carry sentiment. `hard_notitle` is therefore not a guaranteed clean measure, and I should not have called it a pure lower bound |
+| **The descriptor rule also strips quoted user titles** | The matcher removes quote marks before comparing, so a quoted title that equals a descriptor word is stripped like an unquoted label. 6,185 rows (6.0% of all rows, 13.9% of matched rows) are affected, and مقبول is never an unquoted label (all 363 of its rows are quoted). A strict rule (strip only unquoted openings) was measured for TF-IDF only: +0.56 macro-F1 (Chapter 5). Data and results were not regenerated |
+| **Unmatched rows are fine** | Every row the nine phrases do not match starts with a quote, so its first segment is a user-typed title, which is correct to keep. My earlier worry that these rows still carried a leaked label was wrong. `hard_notitle` is still not a clean bound in either direction, because of the over-stripped rows above |
 | **LABR is split by review, not by book** | The hub copy has no book id. Reviews of the same book can sit in train and test, which can inflate scores. Not measured |
 | `variety` is coarse | ASTD is labeled `egyptian`, but a dialect classifier tagged about half of its test tweets as MSA (Chapter 13). The column is never used as a feature |
 | Near-duplicates | Only exact duplicates are removed |

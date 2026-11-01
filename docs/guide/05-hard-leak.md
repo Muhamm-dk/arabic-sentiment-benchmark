@@ -31,19 +31,26 @@ Most HARD reviews begin with a short phrase that almost determines the label. A 
 The phrases carry the star level, not just the polarity. The pattern is consistent with a site's rating categories. I did not verify this.
 
 4. **Lookup test (my arithmetic from the table).** Across these nine phrases, 45,407 reviews (about 44% of 104,036 deduped reviews) carry one. Labeling each by the majority polarity of its phrase gives 45,135 correct, which is 99.4%. A nine-word lookup table labels 44% of the dataset almost perfectly.
-5. **A rejected hypothesis.** I suspected that a leading curly quote marked user-typed text. It did not: 53.5% of reviews start with a quote, at similar rates across ratings (1 star: 59.2%, 2 stars: 52.6%, 4 stars: 47.6%, 5 stars: 57.5%). This test only ruled out quote use as an overall signal. It did not test whether descriptors are unquoted (see the open check below).
+5. **A test that looked negative and was incomplete.** I suspected that a leading quote marks user-typed text and tested only the curly quote. It opened 53.5% of reviews at similar rates across ratings, so I dropped the idea. That test counted reviews opening with a straight quote as unquoted, which hid the pattern. With both quote types the signal is almost perfect (next section).
 6. **Size of the effect, on a first diagnostic.** TF-IDF with logistic regression, random 80/20 split, deduplicated text: macro-F1 0.9369 on raw text and 0.8395 with everything before the first period removed (rows with a remainder of at least 3 characters). The second number is pessimistic, because that crude rule also deletes genuine user text.
 
-## The structure hypothesis
+## The structure (checked on the whole dataset)
 
-Printed samples looked like `"title". liked part. disliked part.`, for example `ضعيف جداً. . موقع المكان غير مناسب عند الخروج مزدحم` (empty liked part) or `“بو محمد”. الموقع. ازعاج...`. In all 21 printed rows, the quoted first segment was a user-typed title and the unquoted one was a score-like word. If a user title exists, it is shown in quotes, and otherwise the score word takes its place.
+Measured on all 103,034 rows of `hard.parquet`, counting both curly and straight quotes:
 
-This fits the numbers: about 44% of reviews match a descriptor, and 46.5% of reviews start without a quote (100% minus the 53.5% that start with one). It is a hypothesis from a sample, not a result.
+| | Starts with a quote | Starts without a quote |
+|---|---|---|
+| First segment is one of the nine phrases | 6,185 | 38,222 |
+| First segment is anything else | 58,627 | 0 |
 
-Consequences if true:
-- A leading segment inside quotes is a genuine user title, even when it equals a descriptor word (row 0 of the raw file is a 2-star review titled “ممتاز”).
-- Our rule removes quote marks before comparing, so it also strips user titles that equal a descriptor word.
-- Rows with a user title carry no descriptor, so they keep whatever sentiment the title holds.
+- Every row is either quoted (64,812 rows, 62.9%) or opens with one of the nine phrases and no quote (38,222 rows, 37.1%). No unquoted row opens with anything else.
+- So the first segment is either a quoted user title or an unquoted phrase from the list. The unquoted phrases are the leak. That they are Booking.com score categories shown in place of a missing title is still my inference, not checked against the HARD paper.
+- A first segment inside quotes is a genuine user title even when it equals a descriptor word. Row 0 of the raw file is a 2-star review titled “ممتاز”.
+- 6,185 matched rows are quoted. That is 6.0% of all rows and 13.9% of the 44,407 matched rows. Quoted share by phrase: ممتاز 34.8%, رائع 26.1%, جيد 16.1%, جيد جداً 11.4%, ضعيف 10.4%, مخيب للأمل 8.1%, استثنائي 7.2%, ضعيف جداً 6.5%, مقبول 100% (all 363 rows).
+- مقبول is therefore never an unquoted label. Its apparent star pattern in the first table (86% at 2 stars, counted on 370 rows before a later dedupe) came from user titles.
+- The rule used in all experiments removes quote marks before comparing, so it strips these 6,185 user titles as well.
+
+Why the earlier quote test missed this: it counted only the curly quote, so rows opening with a straight quote looked unquoted.
 
 ## The fix: two variants
 
@@ -61,7 +68,7 @@ Both use identical rows and identical splits, so the score difference measures t
 | Drop HARD | Loses the largest dataset and the finding itself |
 | Use only the cleaned variant | Hides how the leak behaves and cannot be compared with the literature |
 | Remove the first segment of every review | Also deletes real user titles and removes sentiment that is legitimate. This was the crude diagnostic, and its 0.8395 is too pessimistic |
-| Remove the descriptor only when unquoted | Probably the most accurate rule if the structure hypothesis holds. Not applied yet (open check) |
+| Remove the descriptor only when unquoted (strict rule) | Matches the structure above and needs no phrase list. Tested for TF-IDF only (see the strict-rule check below): +0.56 macro-F1 against the rule used. Not applied to the data or to the encoder and LLM runs |
 | Mask the phrase with a placeholder token | Keeps the sentence shape. Not tried |
 | Detect the leak with a model (a classifier on the first segment) | More complex than an exact-match list, and I did not try it |
 | Train on `hard`, test on `hard_notitle` | A useful extra experiment to show how much models rely on the shortcut. Not run |
@@ -95,7 +102,7 @@ The final rule is `strip_descriptor` in Chapter 4.
 |---|---|
 | Crude diagnostic | Removing everything before the first period gave 0.8395, which exaggerates the leak because it deletes real text (for example "فندق رائع" or "لا انصح به", which carry genuine sentiment) |
 | First-word table was not a coverage figure | I reported that ten first words covered about 57% of rows, but four of those words (الفندق, فندق, تجربة, لا) are ordinary openings and not descriptors. The descriptor coverage figure is about 44% |
-| "Conservative lower bound" overreached | I called `hard_notitle` a conservative lower bound. It can remove genuine user titles, and the other 56% of rows keep their leading segment, so it is neither a clean measure nor a strict bound |
+| "Conservative lower bound" overreached | I called `hard_notitle` a conservative lower bound. The rule over-strips 6.0% of rows (quoted user titles), so it is not a bound in either direction. The other rows start with a quoted user title, which is correct to keep |
 | Hypothesis unverified | That the phrases are Booking.com score labels and that they replace a missing user title are inferences. Neither was checked against the paper |
 | Random split versus final split | The diagnostic used a random split. The final numbers use hotel-level splits, so 0.9369 and 0.8395 are not the same quantities as the later 0.9411 and 0.8710 |
 
@@ -126,21 +133,21 @@ On the 300-row comparison sample (confidence intervals about plus or minus 4 poi
 
 Every system type loses points when the descriptor is removed, including the few-shot LLMs.
 
-## Open check
+## Strict-rule check
 
-Test the structure hypothesis: among rows whose first segment matches a descriptor, what share start with a quote? Run this and write the result below.
+Script: `src/arabic_sentiment/hard_strict_check.py`. TF-IDF + logistic regression with the configuration selected for `hard_notitle` (normalization on, character n-grams, C=10), trained and tested on the same hotel-level split. The strict rule leaves a phrase alone when the review starts with a quote. It leaves 4,914 training rows and 608 of the 10,707 test rows unstripped.
 
-```python
-from arabic_sentiment.data import DESCRIPTORS, lead
-import pandas as pd
-d = pd.read_parquet("data/processed/hard.parquet")
-hit = d.text.map(lead).isin(DESCRIPTORS)
-quoted = d.text.str.lstrip().str.startswith(("\u201c", '"'))
-print(pd.crosstab(hit, quoted, rownames=["descriptor match"], colnames=["starts with quote"]))
-print(quoted[hit].groupby(d.text[hit].map(lead)).agg(["size", "mean"]).round(3))
-```
+| Variant | Macro-F1 | Accuracy on the 608 quoted-match rows | Accuracy on all other rows |
+|---|---|---|---|
+| raw text | 0.9410 | 0.961 | 0.940 |
+| current rule (used in all experiments) | 0.8710 | 0.842 | 0.873 |
+| strict rule | 0.8766 | 0.952 | 0.872 |
 
-Result: (fill in).
+- The `current` line reproduces the saved 0.8710. The `raw text` line is 0.9410 against the saved 0.9411 because the saved baseline selected C=1 for the raw variant.
+- All of the +0.56 comes from the 608 rows. Where the current rule deletes the user's own title, accuracy falls from 0.961 to 0.842, and the strict rule restores it to 0.952. Other rows are unchanged (0.873 and 0.872).
+- Leak gap for TF-IDF: 7.0 points under the current rule, 6.4 under the strict rule.
+
+Decision (rule fixed before running: keep the data if the difference is under about 1 point): keep the data and every result, and document the flaw. Not done: the encoders and LLMs were not rerun with the strict rule, so their sensitivity is unknown, and no paired significance test was run on the overall difference. `data.py` was not changed, because the processed data and all results correspond to the current rule. If the project were redone, the strict rule is the one to use.
 
 ## Check yourself
 

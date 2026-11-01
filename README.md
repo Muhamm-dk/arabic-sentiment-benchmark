@@ -110,6 +110,7 @@ Measured cold start from scale-to-zero: about 27 s (container start plus model d
 - LLM results are single runs on one prompt, on 300-row subsets for LABR and HARD, and invalid replies count as errors. The public datasets may appear in LLM training data.
 - HARD encoder runs use a 20,000-review training subsample, so scores are probably a little below full-data scores.
 - LABR reviews are truncated at 256 tokens (about 10% of reviews).
+- The HARD descriptor rule also strips 6.0% of rows whose first phrase is a quoted, user-typed title. A stricter rule changed the TF-IDF score by +0.56 points. Encoder and LLM runs were not repeated with it, so their leak gaps may be slightly overstated.
 - Dialect labels are predicted, and the dialect analysis cannot separate dialect from domain or hotel region.
 - The ASTD copy used differs from a fuller copy: 95 of that copy's 2,483 binary tweets (3.8%) have no exact match in ours, and 31 of ours have none in theirs. Labels agree on every shared tweet, and class balance is the same.
 - Not evaluated on Gulf or Maghrebi dialect text or other domains.

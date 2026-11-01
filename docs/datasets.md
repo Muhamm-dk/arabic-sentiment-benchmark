@@ -48,7 +48,10 @@ Task: binary sentiment (negative vs positive) on all four datasets, so results a
 - ajgt: 1,440 / 180 / 180
 
 ## HARD descriptor leak
-Most HARD reviews begin with a one or two word segment (for example استثنائي, ضعيف جداً, مخيب للأمل) that maps almost one-to-one to a single star level (استثنائي is 5 stars in 6,724 of 6,727 reviews). This is consistent with Booking.com score labels, not yet verified against the paper. TF-IDF + logistic regression (random split, deduplicated) reaches macro-F1 0.937 on raw text and 0.840 with the leading segment crudely removed. Two variants are benchmarked on identical rows and splits: `hard` (as released, leaky upper bound) and `hard_notitle` (descriptor removed by exact match on a fixed list of 9 phrases, conservative lower bound).
+Most HARD reviews begin with a one or two word segment (for example استثنائي, ضعيف جداً, مخيب للأمل) that maps almost one-to-one to a single star level (استثنائي is 5 stars in 6,724 of 6,727 reviews). This is consistent with Booking.com score labels, not yet verified against the paper. TF-IDF + logistic regression (random split, deduplicated) reaches macro-F1 0.937 on raw text and 0.840 with the leading segment crudely removed. Two variants are benchmarked on identical rows and splits: `hard` (as released, leaky upper bound) and `hard_notitle` (leading phrase removed by exact match on a fixed list of 9 phrases; this also strips 6.0% of rows whose phrase is a quoted user title, so it is not a clean bound).
 
 ## Known issue: ASTD copy
 `arbml/ASTD` was compared with `Qanadil/ASTD_Arabic_Sentiment_Tweets_Dataset`, whose 3,315 subjective tweets match the count reported for the original. 3,186 texts match exactly and all labels agree. 95 of Qanadil's 2,483 binary tweets (3.8%) have no exact match in `arbml`, and 31 binary tweets of `arbml` have none in Qanadil. Positive share is 32.1% vs 32.2%. Kept `arbml`; effect expected to be within noise (not measured).
+
+## HARD descriptor rule check
+Every HARD review opens with either a quoted user title (62.9% of rows) or an unquoted phrase from the list (37.1%). 6,185 rows (6.0%) have a quoted title equal to a listed phrase and were stripped. A strict rule (strip only unquoted) scored +0.56 macro-F1 for TF-IDF (0.8766 vs 0.8710). Data and results were kept; encoders and LLMs were not rerun.
