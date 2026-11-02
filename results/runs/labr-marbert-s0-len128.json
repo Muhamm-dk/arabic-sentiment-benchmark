@@ -1,0 +1,16 @@
+{
+  "run": "labr-marbert-s0-len128",
+  "dataset": "labr",
+  "model": "marbert",
+  "seed": 0,
+  "best_epoch": 3,
+  "val_macro_f1": 0.8819,
+  "test_macro_f1": 0.8844,
+  "test_macro_f1_ci95": [
+    0.8712,
+    0.8971
+  ],
+  "test_accuracy": 0.8844,
+  "n_test": 2283,
+  "peak_vram_gib": 3.61
+}
