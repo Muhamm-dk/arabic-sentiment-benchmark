@@ -6,7 +6,7 @@ Model on the Hub: [Muhamm-dk/arabic-sentiment-marbert-combined](https://huggingf
 
 ## Key findings
 
-1. **Fine-tuned encoders beat TF-IDF on every dataset.** MARBERT is best or tied-best on 4 of 5 test sets. The largest gain is on tweets (ASTD: 0.890 vs 0.771).
+1. **Fine-tuned Arabic encoders beat TF-IDF on every dataset.** AraBERT and MARBERT beat it everywhere, and XLM-R ties it on AJGT. MARBERT has the top score on LABR, ASTD and AJGT, and is within 0.3 points of the top score (AraBERT) on both HARD variants. The largest gain is on tweets (ASTD: 0.890 vs 0.771).
 2. **HARD contains a label leak.** Most reviews start with a Booking.com score label (for example "استثنائي", "ضعيف جداً") that maps almost one-to-one to a star rating. Removing it costs every system 5 to 10 macro-F1 points, so raw HARD scores are inflated. Both variants are reported.
 3. **No dialect gap beyond noise.** Per predicted-dialect scores for the encoders overlap between MSA and non-MSA on LABR and HARD. A manual read of 61 errors found dialect vocabulary plausible in about 13%. Most errors came from missing or mixed sentiment, stance-dependent labels and questionable gold labels.
 
