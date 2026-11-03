@@ -194,21 +194,59 @@ uv run python -m py_compile src/arabic_sentiment/model_facts.py && uv run python
 
 The count includes the pooler, so it is about 0.6M above a model without it. Paste the output and I'll put the real numbers into the next section.
 
-## Numbers (to fill after running the script)
+## Numbers
 
-| Model | Vocab | Params | Tokens per word: LABR / HARD / ASTD / AJGT | Unknown-piece share |
-|---|---|---|---|---|
-| AraBERT | | | | |
-| MARBERT | | | | |
-| XLM-R | | | | |
+Measured with `model_facts.py` (300 test texts per dataset; all of them for ASTD with 242 and AJGT with 180):
 
-Prediction I am committing to before seeing it (so it can be wrong): XLM-R uses the most tokens per word on every dataset, since only 5.6% of its vocabulary is Arabic.
+| Model | Vocab | Params | Embedding share | Fixed training memory | Tokens per word: LABR / HARD no-descr. / ASTD / AJGT |
+|---|---|---|---|---|---|
+| AraBERT | 64,000 | 135.2M | 36% | 2.01 GiB | 1.27 / 1.43 / 1.46 / 1.37 |
+| MARBERT | 100,000 | 162.8M | 47% | 2.43 GiB | 1.20 / 1.30 / 1.33 / 1.13 |
+| XLM-R | 250,002 | 278.0M | 69% | 4.14 GiB | 1.72 / 1.81 / 2.02 / 1.74 |
+
+- The parameter and memory figures match the accounting above, and AraBERT's vocabulary is 64,000 as assumed.
+- The prediction made before running held: XLM-R needs the most tokens per word on every dataset, 39 to 54% more than MARBERT (LABR 1.72 against 1.20, HARD 1.81 against 1.30, ASTD 2.02 against 1.33, AJGT 1.74 against 1.13) and 27 to 38% more than AraBERT. Tokens per word divides the token count by whitespace-separated words, so a hashtag counts as one word.
+- Sample sentence: AraBERT cuts `هرجع` and `تاني` into `هر ##جع` and `تان ##ي`, MARBERT keeps both whole, and XLM-R produces 11 pieces for 7 words.
+
+## Tokenizer findings (`tok_diag.py`)
+
+Settings: AraBERT `do_lower_case` False, MARBERT `do_lower_case` True (strip_accents unset), both fast tokenizers.
+
+Hamza test, input `سيئة أكل إلى مؤسسة آمن`:
+- AraBERT returns the words unchanged.
+- MARBERT returns `سيية اكل الى موسسة امن`: hamza forms are folded (أ إ آ to ا, ئ to ي, ؤ to و) and ة is kept. My reading, from memory of the BERT tokenizer: lowercasing also strips combining marks, which removes hamza marks and diacritics such as tanween. `سيية` is a single vocabulary piece, which suggests the vocabulary was built on text normalized the same way. Not verified.
+
+Unknown pieces (full LABR test set of 2,283 reviews, and all 2,419 binary ASTD tweets):
+
+| Model | Text | Unknown pieces | Most common source texts |
+|---|---|---|---|
+| AraBERT | LABR test | 3,687 of 174,851 (2.1%) | جداً 169, كثيراً 68, `/` 65, جدًا 36, لـ 33, بـ 26, شيئاً 25 |
+| AraBERT | ASTD | 674 of 55,261 (1.2%) | `/` 18, لـ 16, بـ 14, جداً 14, ﻭ 9, ♡ 7, • 7 |
+| MARBERT | LABR test | 2,264 of 163,690 (1.4%) | `"` 1,357, `_` 559, لـ 33, بـ 26 |
+| MARBERT | ASTD | 4,284 of 50,820 (8.4%) | `#` 2,385, `_` 1,507, `"` 294 |
+| XLM-R | all four datasets | 0% (from `model_facts.py`; `tok_diag.py` was not run for it) | |
+
+These shares cover whole sets, so they differ slightly from the 300-row samples in `model_facts.py`.
+
+Reading:
+- MARBERT's unknowns are punctuation-like markers (`#`, `_`, the straight quote). The words in a hashtag are still tokenized. The effect on accuracy was not measured. MARBERT is still the best model on ASTD.
+- AraBERT's unknowns are content words: very common intensifiers and thanks written with tanween. Those are sentiment-bearing positions, which is a plausible handicap on the review datasets. This matches AraBERT's recommended preprocessing, which our runs did not use (open question 1). The effect was not measured.
+- Not checked: whether curly quotes are also unknown for MARBERT. It matters for HARD (Chapter 5), where a quoted user title and an unquoted descriptor differ by their quote marks.
+
+## Length coverage (real tokenizers, full LABR test set)
+
+| | p50 / p90 / p99 | Truncated at 128 | Truncated at 256 |
+|---|---|---|---|
+| AraBERT | 41 / 170 / 692 | 14.3% | 4.9% |
+| MARBERT | 38 / 161 / 685 | 13.1% | 4.6% |
+
+About 5% of reviews are truncated at 256 for the two Arabic models. The README's earlier "about 10%" came from the XLM-R tokenizer on a mixed sample and was too high for them. XLM-R's coverage was not measured with this script.
 
 ## Open questions
 
-1. **AraBERT preprocessing.** Its card recommends it, we used raw text, so its scores may be too low. Cheap test: install `arabert`, preprocess the text, and rerun AJGT and ASTD for 3 seeds. Not done.
-2. **MARBERT beyond 128 tokens.** Pretraining used sequences of 128 tokens, so the position embeddings for 129 to 256 may never have been trained. LABR and HARD fine-tuning uses 256. Cheap test: `--dataset labr --model marbert --max_len 128`, compared with the 256 run. Not done. If 128 matches or beats 256, the long-review results are limited by position embeddings, not by text.
-3. **The pooler.** MARBERT was trained without next-sentence prediction, and that task is what normally trains the pooler layer. The checkpoint still lists `cls.seq_relationship.*` weights, so the pooler may be untrained. This is my inference. An alternative is averaging token vectors instead of using the pooled first token. Not tried.
+1. **AraBERT preprocessing.** Its card recommends the preprocessing tool, we used raw text, and the unknown pieces above fall on exactly the kinds of items the tool handles (tatweel and the slash are confirmed on the card). Test: preprocess the text, then rerun AJGT and ASTD with 3 seeds and LABR with 1. Not done. The comparison must keep the original runs separate from the new ones.
+2. **MARBERT beyond 128 tokens.** Pretraining used sequences of 128 tokens (earlier MARBERT paper version). Measured: MARBERT on LABR at 128 tokens scored test macro-F1 0.8844 against 0.8799 at 256. Paired bootstrap of the difference: +0.0044, 95% interval [-0.0048, +0.0137]. The two models disagree on 116 of 2,283 reviews (63 where only the 128 run is right, 53 the other way). Peak VRAM 3.61 against 5.18 GiB. One seed each, so training noise and the length effect are not separated. Conclusion: no detectable effect of the length. Whether positions 129 to 256 were trained in pretraining was not established.
+3. **The pooler.** MARBERT was trained without next-sentence prediction, which is what normally trains the pooler. The checkpoint still lists `cls.seq_relationship.*` weights. My inference is that the pooler may be untrained. Alternative: average token vectors instead of using the first token. Not tried.
 4. **Overlap with pretraining data.** MARBERT's tweets may include ASTD and AJGT tweets. Not checked.
 
 ## Check yourself
