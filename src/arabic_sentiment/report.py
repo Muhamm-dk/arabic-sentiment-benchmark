@@ -4,6 +4,7 @@ Run: uv run python -m arabic_sentiment.report
 Output: results/results_table.md
 """
 import json
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -21,6 +22,7 @@ def label(run, model):
 def main():
     rows = [json.load(open(f)) for f in (ROOT / "results/runs").glob("*.json")]
     df = pd.DataFrame(rows)
+    df = df[[bool(re.fullmatch(r"[a-z_]+-[a-z]+-s\d+(-n\d+|-tuned)?", r)) for r in df.run]].copy()
     df["col"] = [label(r, m) for r, m in zip(df.run, df.model)]
     g = df.groupby(["dataset", "col"]).test_macro_f1.agg(["mean", "std", "count"])
     base = {b["dataset"]: b for b in json.load(open(ROOT / "results/baseline.json"))}

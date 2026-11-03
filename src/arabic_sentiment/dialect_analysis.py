@@ -6,6 +6,7 @@ Output: results/dialect_analysis.csv
 """
 import glob
 import json
+import re
 from pathlib import Path
 
 import numpy as np
@@ -37,7 +38,7 @@ def cell(y, p):
 
 def encoder_preds(d, m):
     """Return text, label, pred (majority vote across seeds, ties go to the positive class)."""
-    files = [f for f in glob.glob(str(ROOT / f"results/preds/{d}-{m}-s*.parquet")) if "tuned" not in f]
+    files = [f for f in glob.glob(str(ROOT / f"results/preds/{d}-{m}-s*.parquet")) if re.fullmatch(rf"{d}-{m}-s\d+(-n\d+)?\.parquet", Path(f).name)]
     if not files:
         return None
     frames = [pd.read_parquet(f)[["text", "label", "pred"]] for f in files]

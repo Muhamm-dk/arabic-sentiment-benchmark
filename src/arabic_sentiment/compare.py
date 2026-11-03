@@ -1,6 +1,7 @@
 """LLM vs encoder comparison on identical rows. Run: uv run python -m arabic_sentiment.compare"""
 import glob
 import json
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -24,7 +25,7 @@ def main():
         for m in ENCODERS:
             scores = []
             for f in glob.glob(str(ROOT / f"results/preds/{d}-{m}-s*.parquet")):
-                if "tuned" in f:
+                if not re.fullmatch(rf"{d}-{m}-s\d+(-n\d+)?\.parquet", Path(f).name):
                     continue
                 p = pd.read_parquet(f)
                 p = p[p.text.isin(texts)]

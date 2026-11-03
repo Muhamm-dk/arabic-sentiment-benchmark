@@ -1,6 +1,7 @@
 """Per-dataset scores of the combined MARBERT vs single-dataset MARBERT. Run: uv run python -m arabic_sentiment.combined_report"""
 import glob
 import json
+import re
 from pathlib import Path
 
 import numpy as np
@@ -22,7 +23,7 @@ for d, g in c.groupby("dataset"):
     y, p = g.label.to_numpy(), g.pred.to_numpy()
     lo, hi = boot(y, p)
     single = "hard_notitle" if d == "hard_notitle" else d
-    files = [f for f in glob.glob(str(ROOT / f"results/runs/{single}-marbert-s*.json")) if "tuned" not in f]
+    files = [f for f in glob.glob(str(ROOT / f"results/runs/{single}-marbert-s*.json")) if re.fullmatch(rf"{single}-marbert-s\d+(-n\d+)?\.json", Path(f).name)]
     s = np.mean([json.load(open(f))["test_macro_f1"] for f in files]) if files else float("nan")
     rows.append({"dataset": d, "n": len(g), "combined": round(f1_score(y, p, average="macro"), 4),
                  "ci95": f"[{lo:.3f}, {hi:.3f}]", "single_marbert": round(s, 4)})
