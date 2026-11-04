@@ -8,7 +8,7 @@ Model on the Hub: [Muhamm-dk/arabic-sentiment-marbert-combined](https://huggingf
 
 1. **Fine-tuned Arabic encoders beat TF-IDF on every dataset.** AraBERT and MARBERT beat it everywhere, and XLM-R ties it on AJGT. MARBERT has the top score on LABR, ASTD and AJGT, and is within 0.3 points of the top score (AraBERT) on both HARD variants. The largest gain is on tweets (ASTD: 0.890 vs 0.771).
 2. **HARD contains a label leak.** Most reviews start with a Booking.com score label (for example "استثنائي", "ضعيف جداً") that maps almost one-to-one to a star rating. Removing it costs every system 5 to 10 macro-F1 points, so raw HARD scores are inflated. Both variants are reported.
-3. **No dialect gap beyond noise.** Per predicted-dialect scores for the encoders overlap between MSA and non-MSA on LABR and HARD. A manual read of 61 errors found dialect vocabulary plausible in about 13%. Most errors came from missing or mixed sentiment, stance-dependent labels and questionable gold labels.
+3. **No dialect gap detected, with caveats.** Per predicted-dialect scores for the encoders overlap between MSA and non-MSA text on LABR and raw HARD, and a manual read of 61 errors found dialect vocabulary plausible in about 13%. Dialect labels come from an unvalidated third-party classifier (it mislabels short Jordanian tweets), which biases any gap toward zero, and on HARD the Gulf label tracks hotel region. XLM-R on Egyptian tweets is one suggestive exception. The analysis does not cover Gulf or Maghrebi text.
 
 ## Datasets
 
@@ -55,7 +55,7 @@ Free API quotas capped the LLM test size. All systems are scored on the **same r
 | HARD (300) | 0.950 | 0.953 | 0.960 | 0.953 | 0.927 | 0.866 | 0.927 |
 | HARD no-descr. (300) | 0.850 | 0.927 | 0.907 | 0.893 | 0.862 | 0.785 | 0.876 |
 
-CIs on 300 rows are about plus or minus 4 points, so the table is read through paired bootstrap tests on identical rows (`results/paired_llm.csv`). Qwen is not distinguishable from MARBERT on ASTD (-0.2 points, interval [-3.5, +3.1]) and is the only LLM clearly above TF-IDF anywhere (ASTD, +12.6). gpt-oss is below MARBERT on all five test sets. ALLaM is below MARBERT on ASTD, LABR and raw HARD, and not distinguishable on AJGT and HARD without the descriptor. On the 300-row LABR and HARD samples no LLM is detectably above TF-IDF, and the LABR sample favours TF-IDF (its score there is 6.8 points above its full-test score).
+CIs on 300 rows are about plus or minus 4 points, so the table is read through paired bootstrap tests on identical rows (`results/paired_llm.csv`). Qwen is not distinguishable from MARBERT on ASTD (-0.2 points, interval [-3.5, +3.1]) and is the only LLM clearly above TF-IDF anywhere (ASTD, +12.6). gpt-oss is below MARBERT on all five test sets. ALLaM is below MARBERT on ASTD, LABR and raw HARD, and not distinguishable on AJGT and HARD without the descriptor. On the 300-row LABR and HARD samples no LLM is detectably above TF-IDF, and the LABR sample favours TF-IDF (its score there is 6.8 points above its full-test score, a shift matched by 2 of 10,000 random samples of that shape).
 
 LLM setup: 8 shots (4 positive, 4 negative) from the train split, temperature 0, one-word answer. English instruction chosen over Arabic on 60 validation tweets with a rule fixed in advance (Arabic only if it wins by 5 or more points). Models: `qwen/qwen3.8-27b`, `openai/gpt-oss-120b`, `allam-2-7b` on Groq, run October 2026.
 

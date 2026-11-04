@@ -55,12 +55,24 @@ def allam_preds(d):
     return r.rename(columns={"gold": "label", "pred": "pred"})[["text", "label", "pred"]]
 
 
+def tag_frame(tags_all, d):
+    """Dialect tags keyed by the text of dataset d's test rows.
+    hard_notitle has no tags of its own: the hard tags are aligned to its test rows by position."""
+    if d != "hard_notitle":
+        return tags_all[tags_all.dataset == d].drop_duplicates("text")
+    hard = pd.read_parquet(ROOT / "data/processed/hard.parquet").query("split == 'test'").text.tolist()
+    note = pd.read_parquet(ROOT / "data/processed/hard_notitle.parquet").query("split == 'test'").text.tolist()
+    t = tags_all[tags_all.dataset == "hard"].reset_index(drop=True)
+    assert t.text.tolist() == hard and len(hard) == len(note), "hard tags are not aligned with the test rows"
+    return t.assign(text=note).drop_duplicates("text")
+
+
 def main():
-    tags = pd.read_parquet(ROOT / "results/dialect_tags.parquet")
-    tags = tags[tags.conf >= MIN_CONF]
+    tags_all = pd.read_parquet(ROOT / "results/dialect_tags.parquet")
     rows = []
     for d in DATASETS:
-        t = tags[tags.dataset == ("hard" if d == "hard_notitle" else d)].drop_duplicates("text")
+        t = tag_frame(tags_all, d)
+        t = t[t.conf >= MIN_CONF]
         systems = {m: encoder_preds(d, m) for m in ENCODERS}
         systems["allam"] = allam_preds(d)
         for name, p in systems.items():

@@ -36,7 +36,7 @@ Three consequences:
 
 1. **The LABR sample is easier for everyone, but not equally.** On the sample, TF-IDF (0.8833) scores above AraBERT (0.8733) and XLM-R (0.8699). On the full test set, AraBERT is ahead of TF-IDF by 4.7 points with an interval that excludes 0 ([+3.0, +6.4], Chapter 10). The 300-row table must not be used to compare encoders with TF-IDF.
 2. **On HARD without the descriptor, the sample exaggerates the encoder advantage over TF-IDF:** AraBERT minus TF-IDF is +7.7 on the sample and +3.6 on the full set.
-3. **An unexplained size.** TF-IDF's +6.8 on LABR is about 3 standard errors for a random 300-row sample from 2,283 rows (my arithmetic, treating rows as independent draws: about 2.1 points of standard error at 0.8155 after the finite-population correction). That could be chance (roughly 1 in 1,000 by this arithmetic) or something wrong with the sample. A check follows below. If it finds nothing, I treat it as a bad draw that happened to favour all four systems.
+3. **An unusually large shift.** TF-IDF's +6.8 on the LABR sample is about 3.3 standard deviations of the simulated sampling noise (2.07 points). Random samples of the same shape matched it in 2 of 10,000 draws. It is a rare draw and I found no defect in how it was drawn (see the simulation below). The LLM comparisons on LABR are therefore unfavourable to the LLMs and are not used for any claim about LLMs against TF-IDF.
 
 So every LLM comparison on LABR and HARD is a comparison on that particular sample. They stay in the README labelled as such, and no LLM claim in this guide relies on a LABR or HARD sample ranking for the LLMs against TF-IDF.
 
@@ -239,7 +239,7 @@ print(d.groupby("in_sample").agg(n=("text", "size"), pos=("label", "mean"), word
 EOF
 ```
 
-Result of the first check, label balance and length: the sample has about the same positive share as the other 1,983 rows (50.7% against 50.5%) and a shorter mean length (53.7 against 59.9 words) but a longer median (32 against 30). Neither explains a shift of this size. Result of the simulation (`sample_check.py`): (fill in after running).
+Result of the first check, label balance and length: the sample has about the same positive share as the other 1,983 rows (50.7% against 50.5%) and a shorter mean length (53.7 against 59.9 words) but a longer median (32 against 30). Neither explains a shift of this size. Result of the simulation (`sample_check.py`, 10,000 random label-stratified draws of 152 positive and 148 negative rows from the 2,283 test rows): TF-IDF's observed shift of +6.8 points was matched or exceeded in 2 of 10,000 draws (simulated standard deviation 2.07). MARBERT's +3.7 was matched or exceeded in 1.5% of draws (sd 1.77), XLM-R's +2.2 in 11.8% (sd 1.94), AraBERT's +1.0 in 28.4% (sd 1.86). No draw matched both the TF-IDF and the MARBERT shift, which is implied by the TF-IDF figure. Reading: the sample is a rare draw, not a demonstrated defect. I found nothing wrong with how it was drawn (seeded, label-stratified random sample), but a 2-in-10,000 event among four systems examined cannot be fully excluded as a problem I did not find. The shifts differ by system, so the sample is not simply easier for everyone by a fixed amount.
 
 ## What this guide claims after the comparison
 
