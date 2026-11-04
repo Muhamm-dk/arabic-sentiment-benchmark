@@ -74,13 +74,13 @@ Using the Chapter 6 rules (a gap below half the interval width is noise; on ASTD
 
 1. **AraBERT and MARBERT beat TF-IDF on every dataset.** The clearest case is ASTD (+9.6 and +11.9, far outside TF-IDF's interval of about ±5.9). On LABR (+4.7, +6.4) the gaps exceed the interval width of 3.2. On HARD without the descriptor (+3.6, +3.4) they exceed the interval width of 1.2. On AJGT only MARBERT's +5.5 reaches the 5-point rule, and I call it likely, not proven.
 2. **XLM-R does not clearly beat TF-IDF on tweets.** On AJGT it ties (-0.4). On ASTD +6.6 is probably real. Not on HARD: its +1.2 on the raw text is real at that test size, though small.
-3. **The three encoders are not separable on HARD.** Gaps of 0.1 to 0.4 points on 10,707 reviews are inside an interval of about ±0.6, with one seed each.
-4. **MARBERT leads on LABR, ASTD and AJGT, but the gaps over AraBERT (1.7, 2.4, 1.7 points) are not proven.** MARBERT over XLM-R (3.2, 5.3, 5.9) is more convincing, though XLM-R's tuned configuration narrows the AJGT gap to 2.4.
+3. **On HARD, AraBERT and MARBERT are level, and both are less than 1 point ahead of XLM-R.** The paired test below puts AraBERT ahead of XLM-R by 0.4 points (raw) and 0.6 points (descriptor removed), and MARBERT ahead by 0.3 points on raw HARD only, barely above 0. Differences this small matter little in practice, and they come from one seed and one 20,000-review subsample.
+4. **MARBERT leads on LABR, ASTD and AJGT. The paired test supports its lead over AraBERT only on LABR (+1.7 points, interval [+0.4, +3.1], one seed).** On ASTD (+2.0, +0.2, +4.9 across seeds) and AJGT (+0.6, +1.7, +2.8) it does not. MARBERT over XLM-R (3.2, 5.3, 5.9 points) is more convincing, though XLM-R's tuned configuration narrows the AJGT gap to 2.4.
 5. **HARD without the descriptor is the honest HARD number.** All three encoders gain about 3 to 3.6 points over TF-IDF there, against 1.2 to 1.6 on the raw text (Chapter 5).
 
 ### What it does not support
 
-- Any ranking between MARBERT and AraBERT. The pattern (MARBERT ahead on three datasets, AraBERT nominally ahead on both HARD variants) is consistent with a small real advantage on tweets and reviews with dialect, but it is not shown.
+- A general MARBERT-over-AraBERT ranking. The lead is supported on LABR only, in one seed. On HARD the two are level, and on the tweet sets the intervals include 0. A test pooled over seeds was not run.
 - A claim that Arabic-specific pretraining beats multilingual in general. Our evidence is one XLM-R configuration (plus one fixed alternative) and the other two models.
 - Comparing HARD numbers with published ones: our split is by hotel, our training set is a 20,000-review subsample, and our file has 105,698 rows (Chapters 3 and 4).
 
@@ -127,93 +127,55 @@ An interviewer can probe each of these.
 7. **MARBERT's pretraining may include ASTD and AJGT tweets.** Not checked.
 8. **Model choice used test scores.** MARBERT was picked for serving partly because it led on test. With three candidates and these gaps the risk is small.
 
-## Paired comparisons (script provided, results pending)
+## Paired comparisons (measured)
 
-Interval overlap is a rough rule. A paired bootstrap on the same test rows is more powerful, and `paired.py` already does it for two files. This script runs it for every dataset and every pair of systems and prints all of them. For ASTD and AJGT it reports seed 0 with an interval and the seed 1 and 2 differences as points.
+`paired_all.py` takes two systems' predictions on the same test rows, resamples the rows 2,000 times, and bootstraps the macro-F1 difference. Output: `results/paired.csv`. Differences are in points (first system minus second). The interval belongs to seed 0, which is the only seed on LABR and HARD and the first of three on ASTD and AJGT. The last column gives the point differences for seeds 1 and 2, without intervals.
 
-```bash
-nano src/arabic_sentiment/paired_all.py
-```
+| Dataset (test n) | Pair (first minus second) | Seed 0 | 95% interval | Seeds 1 and 2 |
+|---|---|---|---|---|
+| LABR (2,283) | AraBERT - TF-IDF | +4.7 | [+3.0, +6.3] | - |
+| LABR (2,283) | MARBERT - TF-IDF | +6.4 | [+4.9, +8.1] | - |
+| LABR (2,283) | XLM-R - TF-IDF | +3.2 | [+1.6, +5.0] | - |
+| LABR (2,283) | MARBERT - AraBERT | +1.7 | [+0.4, +3.1] | - |
+| LABR (2,283) | MARBERT - XLM-R | +3.2 | [+1.8, +4.6] | - |
+| LABR (2,283) | AraBERT - XLM-R | +1.5 | [+0.0, +2.9] | - |
+| HARD, as released (10,707) | AraBERT - TF-IDF | +1.58 | [+1.18, +1.98] | - |
+| HARD, as released (10,707) | MARBERT - TF-IDF | +1.50 | [+1.10, +1.90] | - |
+| HARD, as released (10,707) | XLM-R - TF-IDF | +1.20 | [+0.78, +1.60] | - |
+| HARD, as released (10,707) | MARBERT - AraBERT | -0.07 | [-0.34, +0.19] | - |
+| HARD, as released (10,707) | MARBERT - XLM-R | +0.31 | [+0.02, +0.61] | - |
+| HARD, as released (10,707) | AraBERT - XLM-R | +0.38 | [+0.11, +0.68] | - |
+| HARD, descriptor removed (10,707) | AraBERT - TF-IDF | +3.57 | [+2.95, +4.17] | - |
+| HARD, descriptor removed (10,707) | MARBERT - TF-IDF | +3.34 | [+2.75, +3.96] | - |
+| HARD, descriptor removed (10,707) | XLM-R - TF-IDF | +2.99 | [+2.41, +3.60] | - |
+| HARD, descriptor removed (10,707) | MARBERT - AraBERT | -0.22 | [-0.64, +0.21] | - |
+| HARD, descriptor removed (10,707) | MARBERT - XLM-R | +0.35 | [-0.10, +0.79] | - |
+| HARD, descriptor removed (10,707) | AraBERT - XLM-R | +0.58 | [+0.16, +1.00] | - |
+| ASTD (242) | AraBERT - TF-IDF | +10.8 | [+4.8, +17.4] | +11.9, +6.0 |
+| ASTD (242) | MARBERT - TF-IDF | +12.8 | [+6.6, +19.3] | +12.1, +10.9 |
+| ASTD (242) | XLM-R - TF-IDF | +6.3 | [+0.1, +12.9] | +5.7, +7.7 |
+| ASTD (242) | MARBERT - AraBERT | +2.0 | [-2.1, +5.9] | +0.2, +4.9 |
+| ASTD (242) | MARBERT - XLM-R | +6.5 | [+1.5, +11.3] | +6.4, +3.1 |
+| ASTD (242) | AraBERT - XLM-R | +4.5 | [+0.1, +8.8] | +6.3, -1.8 |
+| AJGT (180) | AraBERT - TF-IDF | +3.9 | [-0.7, +8.9] | +5.0, +2.8 |
+| AJGT (180) | MARBERT - TF-IDF | +4.5 | [-0.5, +9.5] | +6.7, +5.5 |
+| AJGT (180) | XLM-R - TF-IDF | +0.6 | [-4.3, +5.6] | -0.5, -1.1 |
+| AJGT (180) | MARBERT - AraBERT | +0.6 | [-3.4, +5.0] | +1.7, +2.8 |
+| AJGT (180) | MARBERT - XLM-R | +3.9 | [-1.1, +9.0] | +7.2, +6.7 |
+| AJGT (180) | AraBERT - XLM-R | +3.3 | [-1.1, +8.2] | +5.5, +3.9 |
 
-```python
-"""Paired bootstrap of macro-F1 differences between systems on identical test rows.
-Run: uv run python -m arabic_sentiment.paired_all
-Output: results/paired.csv
-"""
-import re
-from pathlib import Path
+Reading, using the Chapter 6 rules:
 
-import numpy as np
-import pandas as pd
+- **Interval excludes 0** (test-row sampling only): all three encoders over TF-IDF on LABR, HARD and HARD without the descriptor; AraBERT and MARBERT over TF-IDF on ASTD; XLM-R over TF-IDF on ASTD (barely); MARBERT over AraBERT on LABR; MARBERT over XLM-R on LABR, ASTD and raw HARD; AraBERT over XLM-R on LABR, ASTD and both HARD variants.
+- **Interval includes 0:** every pair on AJGT; MARBERT against AraBERT on both HARD variants and on ASTD; MARBERT against XLM-R on HARD without the descriptor.
+- **Fragile results:** six intervals have a lower bound under 0.2 points: AraBERT over XLM-R on LABR (+0.04), on raw HARD (+0.11), on HARD without the descriptor (+0.16) and on ASTD (+0.15); MARBERT over XLM-R on raw HARD (+0.02); XLM-R over TF-IDF on ASTD (+0.09). Thirty intervals were examined without correction for multiple comparisons, so one or two of the fragile ones could be chance.
+- **Seed-to-seed instability:** on ASTD, AraBERT minus XLM-R is +4.5, +6.3 and -1.8 across the three seeds. A single-seed interval hides this.
+- **AJGT:** MARBERT minus TF-IDF is positive in all three seeds (+4.5, +6.7, +5.6), although the interval for seed 0 includes 0. The three seeds use the same 180 test rows, so agreement across seeds does not remove the test-sampling uncertainty. It is suggestive, not proof.
+- **Paired against separate intervals:** MARBERT against AraBERT on LABR has a paired half-width of about 1.3 points. Two separate intervals of about plus or minus 1.3 each (MARBERT's 128-token run: [0.8712, 0.8971]) combine to about plus or minus 1.8 (arithmetic), which would not show a 1.7-point gap as significant. On raw HARD, MARBERT against XLM-R has a paired half-width of 0.30 against about 0.57 for combined separate intervals.
+- **Predictions made beforehand all held:** MARBERT and AraBERT over TF-IDF excluding 0 on LABR, HARD without the descriptor and ASTD; XLM-R over TF-IDF excluding 0 on LABR and both HARD variants and including 0 on AJGT; MARBERT against AraBERT including 0 on HARD, ASTD and AJGT. I had left MARBERT against AraBERT on LABR open, and it excludes 0.
+- **Two readings above were corrected because of this:** the encoders are slightly separable on HARD, and MARBERT's lead over AraBERT is supported on LABR (items 3 and 4 of "What the numbers support").
 
-ROOT = Path(__file__).resolve().parents[2]
-PREDS = ROOT / "results/preds"
-DATASETS = ["labr", "hard", "hard_notitle", "astd", "ajgt"]
-PAIRS = [("arabert", "tfidf"), ("marbert", "tfidf"), ("xlmr", "tfidf"),
-         ("marbert", "arabert"), ("marbert", "xlmr"), ("arabert", "xlmr")]
-N_BOOT, SEED = 2000, 42
-
-
-def macro_f1(y, p):
-    tp1, tp0 = np.sum((y == 1) & (p == 1)), np.sum((y == 0) & (p == 0))
-    fp1, fn1 = np.sum((y == 0) & (p == 1)), np.sum((y == 1) & (p == 0))
-    return (2 * tp1 / max(2 * tp1 + fp1 + fn1, 1) + 2 * tp0 / max(2 * tp0 + fp1 + fn1, 1)) / 2
-
-
-def find(d, m, s):
-    pat = re.compile(rf"{d}-{m}-s{s}(-n\d+)?\.parquet")
-    hits = [f for f in PREDS.glob(f"{d}-{m}-s{s}*.parquet") if pat.fullmatch(f.name)]
-    return hits[0] if hits else None
-
-
-def main():
-    rows = []
-    for d in DATASETS:
-        for a, b in PAIRS:
-            res = {}
-            for s in (0, 1, 2):
-                fa, fb = find(d, a, s), find(d, b, 0 if b == "tfidf" else s)
-                if fa is None or fb is None:
-                    continue
-                A = pd.read_parquet(fa)[["text", "label", "pred"]]
-                B = pd.read_parquet(fb)[["text", "pred"]]
-                m = A.merge(B, on="text", suffixes=("_a", "_b"))
-                assert len(m) == len(A) == len(B), f"{d} {a} vs {b} seed {s}: row mismatch"
-                y, pa, pb = m.label.to_numpy(), m.pred_a.to_numpy(), m.pred_b.to_numpy()
-                res[s] = (macro_f1(y, pa) - macro_f1(y, pb), y, pa, pb)
-            if 0 not in res:
-                continue
-            diff0, y, pa, pb = res[0]
-            rng = np.random.default_rng(SEED)
-            boots = np.empty(N_BOOT)
-            for k in range(N_BOOT):
-                i = rng.integers(0, len(y), len(y))
-                boots[k] = macro_f1(y[i], pa[i]) - macro_f1(y[i], pb[i])
-            lo, hi = np.percentile(boots, [2.5, 97.5])
-            rows.append({"dataset": d, "pair": f"{a} - {b}", "n": len(y), "diff_s0": round(diff0, 4),
-                         "ci95": f"[{lo:+.4f}, {hi:+.4f}]", "excludes_0": bool(lo > 0 or hi < 0),
-                         "diff_s1": round(res[1][0], 4) if 1 in res else None,
-                         "diff_s2": round(res[2][0], 4) if 2 in res else None})
-    out = pd.DataFrame(rows)
-    out.to_csv(ROOT / "results/paired.csv", index=False)
-    print(out.to_string(index=False))
-
-
-if __name__ == "__main__":
-    main()
-```
-
-```bash
-uv run python -m py_compile src/arabic_sentiment/paired_all.py && uv run python -m arabic_sentiment.paired_all
-```
-
-It runs on CPU in a minute or two. Its pairing uses each system's seed-0 predictions (and seed 1 and 2 where they exist, for the 3-seed datasets). Differences are in macro-F1, as fractions (0.05 = 5 points).
-
-Predictions committed before running, so they can be wrong:
-- MARBERT against TF-IDF: the interval excludes 0 on LABR, HARD without the descriptor and ASTD. AJGT is a coin flip.
-- AraBERT against TF-IDF: excludes 0 on LABR, both HARD variants and ASTD. It includes 0 on AJGT.
-- XLM-R against TF-IDF: excludes 0 on LABR and both HARD variants. It includes 0 on AJGT, and ASTD is unclear.
-- MARBERT against AraBERT: includes 0 on HARD, ASTD and AJGT. LABR is unclear.
+What this does not cover: training-seed variation on LABR and HARD (one seed each), a test pooled over seeds, and the effect of the 20,000-row HARD subsample. `paired_all.py` computes macro-F1 with a closed-form shortcut that is correct only for predictions of 0 and 1, which is all the encoders and TF-IDF produce. The LLM version (Chapter 12) handles invalid replies.
 
 ## What went wrong
 

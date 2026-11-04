@@ -101,7 +101,7 @@ An unparseable reply is stored as -1. With `labels=[0, 1]` the score is averaged
 | | Calibration (Brier score, ECE) | Not measured. Matters for a deployed classifier, since the API returns a confidence |
 | Bootstrap CI on predictions | k-fold cross-validation | Better for tiny datasets, but every run is multiplied, which was impossible for the LLMs |
 | | Repeated random splits | Same cost problem |
-| Overlap of intervals | Paired bootstrap on identical rows | **More powerful, and the row-matched design makes it possible. Not run** |
+| Overlap of intervals | Paired bootstrap on identical rows | More powerful, because the rows are identical. Run later for encoders and TF-IDF (Chapter 10, `paired_all.py`) and for LLMs (Chapter 12, `paired_llm.py`). It measures test-row sampling only, not training-seed variation |
 | | McNemar's test | Same: possible, not run |
 | | Wilcoxon over seeds | Needs more than 3 seeds |
 | 3 seeds on small sets | 5 or 10 seeds | More reliable, more compute |
@@ -126,7 +126,7 @@ These do not change any conclusion, but they are the places an interviewer could
 2. **The deployed model was kept after seeing per-dataset test scores** (combined model against single-dataset models). The decision rule was "within noise", written before the comparison, but the numbers were visible.
 3. **Diagnostics ran on test splits.** The HARD strict-rule check scored TF-IDF on the test set. It was used for documentation, not to choose a configuration.
 4. **The AJGT smoke test** (one MARBERT run) was scored on test, and the result is a reported number.
-5. **No formal significance tests.** Statements like "not separable" use interval overlap, which is a rough rule. Two systems with overlapping intervals can still differ in a paired comparison on the same rows.
+5. **Significance tests came late.** Chapters 6 to 9 were written using interval overlap, a rough rule. Paired bootstrap tests were added afterwards (Chapter 10) and changed two statements: MARBERT over AraBERT on LABR is supported, and the encoders are slightly separable on HARD. The tests cover test-row sampling only, not training-seed variation, and 30 uncorrected intervals were examined.
 6. **The gpt-oss output budget** was changed once on validation after seeing the invalid rate (300 to 1000 tokens), then frozen.
 
 ## Numbers
