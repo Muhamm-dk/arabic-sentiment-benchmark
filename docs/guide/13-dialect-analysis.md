@@ -147,7 +147,16 @@ On rows the main classifier calls non-MSA with confidence at least 0.7, and for 
 - **On HARD the second classifier says Gulf for 89% of the rows the main classifier calls MSA.** On hotel reviews it appears to default to Gulf, so its 78.4% agreement on the non-MSA rows is probably largely base rates: 69% of HARD's non-MSA test rows are GLF (any confidence). This is an inference. Chance-corrected agreement (Cohen's kappa) is in `dialect_kappa.py`.
 - Both classifiers are MARBERTv2 fine-tunes, so agreement is not independent evidence of accuracy.
 - With no MSA class, the second classifier pushes formal text to a dialect, mostly Maghrebi on LABR and Gulf on HARD, as the 15-row sample suggested.
-- Chance-corrected agreement (`dialect_kappa.py`): (fill in after running).
+- Chance-corrected agreement (`dialect_kappa.py`), on rows the main classifier calls non-MSA at confidence 0.7 or more:
+
+| Dataset | Rows | Agreement | Expected by chance | Cohen's kappa |
+|---|---|---|---|---|
+| AJGT | 95 | 80.0% | 31.8% | 0.71 |
+| ASTD | 118 | 86.4% | 74.6% | 0.47 |
+| HARD | 3,044 | 78.4% | 66.0% | 0.36 |
+| LABR | 745 | 83.1% | 40.4% | 0.72 |
+
+  Predictions scored: kappa under 0.4 on HARD held (0.36), above 0.6 on LABR and AJGT held (0.72, 0.71), under 0.4 on ASTD failed (0.47). On HARD about two thirds of the agreement is what chance alone would give (the main classifier says Gulf for 74% of these rows and the second for 88%), so the raw 78.4% overstates it. On LABR and AJGT the two classifiers agree well beyond chance, so they mostly assign the same dialect to the same text. That is consistency, not accuracy: both are MARBERTv2 fine-tunes. It also does **not** test the boundary the group comparisons depend on. The second classifier has no MSA class, and kappa covers only rows the main classifier already called non-MSA, so nothing here validates the MSA against non-MSA split.
 
 ### Corrected `hard_notitle` rows
 

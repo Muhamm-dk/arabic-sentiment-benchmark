@@ -69,7 +69,7 @@ One MARBERT fine-tuned on LABR, HARD (descriptor removed, 20,000-review subsampl
 
 **Dialect analysis.** Dialect labels come from a third-party classifier (`IbrahimAmin/marbertv2-arabic-written-dialect-classifier`), kept at confidence 0.7 or higher. They are predictions, not human annotation, and on HARD they track hotel region as much as dialect. Groups under 50 rows are not reported. Results in `results/dialect_analysis.csv`.
 
-**Error analysis.** One annotator (the model author's assistant) tagged 61 MARBERT errors from AJGT, ASTD and LABR. Details in `docs/error_analysis.md`. Treat counts as indicative.
+**Error analysis.** An AI assistant (Claude), not a native-speaker annotator, tagged 61 MARBERT errors: all 15 AJGT and all 21 ASTD errors from seed 0, and a random 25 of the 274 LABR errors. Details in `docs/error_analysis.md`. Counts are indicative and need human verification.
 
 ## Reproduce
 
