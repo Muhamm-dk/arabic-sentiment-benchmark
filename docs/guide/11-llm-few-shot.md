@@ -213,10 +213,13 @@ Interval widths: about ±5 points on ASTD and AJGT, about ±4 on the 300-row set
 
 ### What the numbers support
 
-- **Qwen ties the best encoder on ASTD** (0.8966 against 0.8902). The difference is far inside the interval.
-- **On AJGT the best encoder is likely ahead:** MARBERT leads Qwen by 5.0 points, at the edge of the interval.
-- **ALLaM, the Arabic specialist, is no better than TF-IDF on ASTD** (0.7522 against 0.7708).
-- **On reviews, the LLMs roughly match TF-IDF** and trail the encoders (LABR 300 rows: Qwen 0.8797 and TF-IDF 0.8833). On HARD without the descriptor the encoders (0.893 to 0.927) are ahead of Qwen and ALLaM (0.862, 0.876) by gaps of about 2 to 6 points, which a 300-row interval cannot separate for most pairs. gpt-oss at 0.7847 is clearly below the encoders.
+Paired bootstrap on the identical rows (Chapter 12; differences in points, LLM minus the other system):
+
+- **Qwen is not distinguishable from MARBERT on ASTD** (-0.2, interval [-3.5, +3.1]; -0.2, +0.5 and +1.7 across MARBERT's three seeds). It is the only LLM clearly above TF-IDF anywhere (ASTD, +12.6, [+6.7, +18.8]).
+- **On AJGT** no LLM is distinguishable from TF-IDF. Qwen and ALLaM are about 3.8 points below MARBERT with intervals that include 0 (all three MARBERT seeds give negative differences for both). gpt-oss is clearly below MARBERT (-8.7).
+- **ALLaM, the Arabic specialist, is not above TF-IDF on ASTD** (-1.9, [-9.1, +5.8]) and is far below MARBERT there (-14.7, interval excludes 0).
+- **On the 300-row LABR and HARD samples** no LLM is detectably above TF-IDF. Qwen and ALLaM are about 3.3 points below MARBERT on raw HARD, and Qwen 4.4 below it without the descriptor. ALLaM is not distinguishable from MARBERT without the descriptor. gpt-oss is below MARBERT everywhere and below TF-IDF on both HARD variants.
+- **TF-IDF scores 6.8 points higher on the LABR sample than on the full test set, and 2.1 points lower on HARD without the descriptor,** so LLM-against-TF-IDF comparisons are unfavourable to the LLMs on LABR and favourable on HARD without the descriptor (Chapter 12).
 - **The leak affects LLMs too.** Removing the descriptor costs Qwen 6.4 points, ALLaM 5.1 and gpt-oss 8.2 (Chapter 5). The shots on `hard` contain descriptors, which may teach the shortcut. I did not test that.
 
 ### What they do not support
@@ -284,7 +287,7 @@ Predictions made before running (rough arithmetic, so they can be wrong):
 - Full test sets for LABR and HARD (the quota).
 - Jais, or any model on Kaggle.
 - A contamination check (these public datasets may be in the models' training data, and I cannot rule it out).
-- A paired comparison of LLMs against encoders on the same rows (possible, since the rows are matched).
+- Paired comparisons between the LLMs themselves (done against TF-IDF and MARBERT, Chapter 12).
 - Confidence or calibration for LLM answers.
 
 ## Check yourself

@@ -178,6 +178,52 @@ Predictions committed before running (rough, from the scores above, so they can 
 4. gpt-oss against MARBERT on HARD without the descriptor: excludes 0, with gpt-oss behind (0.7847 against 0.9066).
 5. Every LLM against TF-IDF on AJGT: includes 0.
 
+## LLMs against TF-IDF and MARBERT (measured)
+
+`paired_llm.py` on the identical rows each LLM saw. Cells show the seed-0 difference in points (LLM minus the other system), the 95% paired interval, and `*` when the interval excludes 0. Invalid replies count as wrong. Counts of invalid replies are in `results/paired_llm.csv`.
+
+LLM minus TF-IDF:
+
+| Dataset | Qwen | gpt-oss | ALLaM |
+|---|---|---|---|
+| AJGT (180) | +0.6 [-5.5, +6.9] | -4.2 [-11.1, +2.5] | +0.7 [-5.2, +6.9] |
+| ASTD (242) | +12.6 [+6.7, +18.8] * | +5.6 [-0.9, +12.3] | -1.9 [-9.1, +5.8] |
+| LABR (300-row sample) | -0.4 [-4.8, +4.0] | -4.3 [-9.0, +0.6] | -3.8 [-8.5, +1.6] |
+| HARD (300-row sample) | -2.4 [-5.3, +0.6] | -8.4 [-12.5, -4.5] * | -2.3 [-5.3, +0.3] |
+| HARD no-descriptor (300-row sample) | +1.2 [-3.2, +5.6] | -6.5 [-11.8, -1.5] * | +2.6 [-1.9, +6.9] |
+
+LLM minus MARBERT:
+
+| Dataset | Qwen | gpt-oss | ALLaM |
+|---|---|---|---|
+| AJGT (180) | -3.9 [-9.4, +1.2] | -8.7 [-14.3, -3.4] * | -3.8 [-9.0, +1.3] |
+| ASTD (242) | -0.2 [-3.5, +3.1] | -7.2 [-12.0, -2.5] * | -14.7 [-20.2, -8.9] * |
+| LABR (300-row sample) | -3.7 [-7.8, +0.3] | -7.7 [-12.0, -3.3] * | -7.1 [-11.8, -2.3] * |
+| HARD (300-row sample) | -3.4 [-6.1, -0.7] * | -9.4 [-12.9, -6.0] * | -3.3 [-6.0, -0.7] * |
+| HARD no-descriptor (300-row sample) | -4.4 [-8.2, -0.7] * | -12.2 [-17.1, -7.7] * | -3.1 [-6.7, +0.6] |
+
+Differences across MARBERT's three seeds on the tweet sets (point differences, no intervals):
+
+| Dataset | LLM | MARBERT seed 0 | Seed 1 | Seed 2 |
+|---|---|---|---|---|
+| AJGT (180) | Qwen | -3.9 | -6.1 | -5.0 |
+| AJGT (180) | gpt-oss | -8.7 | -10.9 | -9.8 |
+| AJGT (180) | ALLaM | -3.8 | -6.0 | -4.9 |
+| ASTD (242) | Qwen | -0.2 | +0.4 | +1.7 |
+| ASTD (242) | gpt-oss | -7.2 | -6.6 | -5.3 |
+| ASTD (242) | ALLaM | -14.7 | -14.0 | -12.8 |
+
+Reading:
+
+- Qwen is the only LLM clearly above TF-IDF anywhere (ASTD, +12.6). gpt-oss is below TF-IDF on both HARD variants.
+- Qwen is not distinguishable from MARBERT on ASTD (-0.2 points, interval [-3.5, +3.1]; -0.2, +0.5 and +1.7 across seeds). The interval rules out gaps beyond about 3.5 points and nothing smaller.
+- gpt-oss is below MARBERT on all five test sets. It has 18 invalid replies on AJGT and 18 on ASTD, so part of that gap is invalid replies.
+- ALLaM is below MARBERT on ASTD, LABR and raw HARD, and not distinguishable on AJGT and HARD without the descriptor.
+- Qwen is below MARBERT on both HARD variants. On AJGT and LABR the intervals include 0, although all three AJGT seeds are negative.
+- TF-IDF's score on the LABR sample is 6.8 points above its full-test score, which is unfavourable to the LLMs. On HARD without the descriptor it is 2.1 points below, which favours them.
+- Thirty intervals were examined without correction for multiple comparisons. LLM runs are single runs.
+- All five predictions made before running held.
+
 ## Check the LABR sample
 
 This asks whether the 300 sampled rows differ from the other 1,983 test rows in a way the label balance does not show.
@@ -193,7 +239,7 @@ print(d.groupby("in_sample").agg(n=("text", "size"), pos=("label", "mean"), word
 EOF
 ```
 
-If the sample is shorter on average than the rest, that would explain part of the easier score (shorter reviews are usually easier, which is an assumption, not tested). If the groups look alike, the gap is probably a draw. Write the result here: (fill in).
+Result of the first check, label balance and length: the sample has about the same positive share as the other 1,983 rows (50.7% against 50.5%) and a shorter mean length (53.7 against 59.9 words) but a longer median (32 against 30). Neither explains a shift of this size. Result of the simulation (`sample_check.py`): (fill in after running).
 
 ## What this guide claims after the comparison
 
@@ -207,7 +253,7 @@ If the sample is shorter on average than the rest, that would explain part of th
 | MARBERT is level with AraBERT on HARD, ASTD and AJGT | Intervals include 0 | Not separable |
 | AraBERT and MARBERT are slightly ahead of XLM-R | LABR, ASTD (MARBERT), HARD under 1 point | Moderate on LABR and ASTD, weak on HARD |
 | The HARD descriptor inflates every system | Chapter 5 | Strong |
-| Qwen ties the best encoder on ASTD | 0.8966 against 0.8902 | To be tested with `paired_llm.py` |
+| Qwen is not distinguishable from MARBERT on ASTD | Paired difference -0.2 points, interval [-3.5, +3.1]; -0.2, +0.5, +1.7 across seeds | Moderate: rules out gaps beyond about 3.5 points on 242 tweets |
 | LLM comparisons on LABR and HARD | 300-row samples with unexplained sampling differences | Weak |
 
 ## Not done
