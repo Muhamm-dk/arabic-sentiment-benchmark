@@ -180,7 +180,7 @@ None of these were run.
 | A silent stall | The first run piped output through `grep`, which hid the progress lines. The script was waiting out per-minute windows, getting one request through at a time, and blocking again. Fix: stop on a daily-token message, and run without filters |
 | Slow schedule | The test runs took about three days: ALLaM finished on day 1, gpt-oss and Qwen needed refills |
 | gpt-oss empty generations | `output_parse_failed` with no text: 5.0% and 3.3% on validation, then 10.0% (AJGT) and 7.4% (ASTD) on test. A tiny curl test (5-token cap) returned an empty reply with the text in a `reasoning` field, so reasoning tokens count against the output budget. I did not establish why the failures persist at 1,000 tokens |
-| ALLaM off-task replies | Replies such as "as an AI assistant I have no opinions" appeared for both positive and negative tweets. The 16-token cap cut them off (finish reason `length`). I first guessed the refusals were specific to negative tweets, and that was wrong |
+| ALLaM off-task replies | Replies such as "as an AI assistant I have no opinions" appeared for both positive and negative tweets. On the test sets 18 of ALLaM's 27 invalid replies hit the 16-token cap (finish reason `length`) and 9 finished normally with non-label text, so the cap is not the whole story. I first guessed the refusals were specific to negative tweets, and that was wrong |
 | Invalid key | A call returned 401 after earlier successes. I did not establish why. A new key worked. A key was also pasted into a chat once and rotated. Keys now go through `read -rs` into an environment variable |
 | Duplicate queue | A second queue on the same file, 5 duplicate lines. Rule: one queue per model, and never edit a result file while a queue runs |
 | A rewrite during a write | A dedupe script ran while the queue was appending. The check afterwards found no gap |
@@ -226,9 +226,9 @@ Paired bootstrap on the identical rows (Chapter 12; differences in points, LLM m
 
 - A ranking among the three LLMs on most datasets. Qwen's lead is clear on ASTD and weaker elsewhere.
 - Any conclusion about LLMs in general. Three models, one prompt, one run each.
-- That gpt-oss is a weak classifier. Much of its gap comes from invalid replies. A script below separates this out.
+- That gpt-oss is a weak classifier, or a strong one. Invalid replies cost it 4.6 (AJGT), 3.0 (ASTD), 0.4 and 0.7 (HARD) points, so they explain part of its gap. On valid replies it is still below Qwen on ASTD and both HARD variants, though the valid-only subsets are not the same rows.
 
-## Diagnostics script (provided, not yet run)
+## Diagnostics script and results
 
 It separates invalid replies from wrong answers and shows label bias from the saved replies (the `.jsonl` files exist locally; they are not in git).
 
@@ -275,10 +275,37 @@ print(pd.DataFrame(rows).to_string(index=False))
 uv run python -m py_compile src/arabic_sentiment/llm_report.py && uv run python -m arabic_sentiment.llm_report
 ```
 
-Predictions made before running (rough arithmetic, so they can be wrong):
-1. gpt-oss's score on valid replies only is about 0.90 or more on AJGT and ASTD (dividing its score by the share of valid rows suggests roughly 0.92 and 0.89), so its low numbers are mostly invalid replies.
-2. ALLaM over-predicts positive: its predicted-positive share exceeds the true share, and its negative recall is the lowest of the three, on ASTD especially.
-3. Qwen's predicted-positive share is near the true share.
+Results (`llm_report.py`, test replies; `F1 all` counts invalid replies as wrong; predicted-positive share is among valid replies; recalls count an invalid reply as a miss):
+
+| Model | Dataset | n | Invalid | F1 all | F1 valid only | Predicted positive | True positive | Recall negative | Recall positive |
+|---|---|---|---|---|---|---|---|---|---|
+| ALLaM | AJGT | 180 | 3.3% | 0.8790 | 0.8952 | 60.3% | 50.0% | 0.756 | 0.978 |
+| ALLaM | ASTD | 242 | 6.6% | 0.7522 | 0.7765 | 49.6% | 31.8% | 0.655 | 0.896 |
+| ALLaM | HARD | 300 | 0.0% | 0.9266 | 0.9266 | 48.0% | 49.3% | 0.941 | 0.912 |
+| ALLaM | HARD no-descr. | 300 | 0.7% | 0.8759 | 0.8788 | 45.3% | 49.3% | 0.914 | 0.831 |
+| ALLaM | LABR | 300 | 1.0% | 0.8453 | 0.8500 | 59.9% | 50.7% | 0.743 | 0.941 |
+| gpt-oss | AJGT | 180 | 10.0% | 0.8301 | 0.8764 | 53.1% | 50.0% | 0.756 | 0.822 |
+| gpt-oss | ASTD | 242 | 7.4% | 0.8265 | 0.8561 | 35.3% | 31.8% | 0.806 | 0.805 |
+| gpt-oss | HARD | 300 | 1.0% | 0.8664 | 0.8706 | 40.1% | 49.3% | 0.954 | 0.770 |
+| gpt-oss | HARD no-descr. | 300 | 1.7% | 0.7847 | 0.7913 | 34.6% | 49.3% | 0.928 | 0.635 |
+| gpt-oss | LABR | 300 | 0.0% | 0.8400 | 0.8400 | 50.0% | 50.7% | 0.845 | 0.836 |
+| Qwen | AJGT | 180 | 0.0% | 0.8778 | 0.8778 | 51.1% | 50.0% | 0.867 | 0.889 |
+| Qwen | ASTD | 242 | 0.0% | 0.8966 | 0.8966 | 33.5% | 31.8% | 0.921 | 0.883 |
+| Qwen | HARD | 300 | 0.0% | 0.9265 | 0.9265 | 46.0% | 49.3% | 0.961 | 0.892 |
+| Qwen | HARD no-descr. | 300 | 0.0% | 0.8622 | 0.8622 | 41.7% | 49.3% | 0.941 | 0.784 |
+| Qwen | LABR | 300 | 0.0% | 0.8797 | 0.8797 | 54.0% | 50.7% | 0.845 | 0.914 |
+
+Predictions made before running, scored:
+
+1. **Failed.** I expected gpt-oss's score on valid replies only to be about 0.92 (AJGT) and 0.89 (ASTD). It is 0.876 and 0.856. Invalid replies cost it 4.6, 3.0, 0.4 and 0.7 points on AJGT, ASTD, HARD and HARD without the descriptor. On valid replies it is still below Qwen on ASTD (0.856 against 0.897) and on both HARD variants, though the valid-only subsets are not the same rows as Qwen's.
+2. **Held.** ALLaM's predicted-positive share is above the true share on AJGT, ASTD and LABR (ASTD 49.6% against 31.8%), and slightly below on both HARD variants. Its negative recall is the lowest, or tied lowest, of the three models on all five sets.
+3. **Half held.** Qwen is within 1.7 points of the true positive share on AJGT and ASTD and within 3.3 on LABR and raw HARD, but 7.6 points low on HARD without the descriptor.
+
+Also measured:
+
+- **Removing the HARD descriptor costs the LLMs mostly in positive recall:** gpt-oss 0.770 to 0.635, Qwen 0.892 to 0.784, ALLaM 0.912 to 0.831, against changes of -2.6, -2.0 and -2.7 points in negative recall. My guess, not tested: positive hotel reviews often contain a complaint section, which a model reads as negative once the label word is gone.
+- gpt-oss under-predicts positive on both HARD variants (40.1% and 34.6%).
+- Not every invalid reply is a cap or an empty generation. Of gpt-oss's 44 invalid test replies, 37 were `output_parse_failed` and 7 were non-label text with a normal finish. Of ALLaM's 27, 18 hit the token cap and 9 finished normally with off-task text.
 
 ## Not done
 

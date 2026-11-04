@@ -106,7 +106,7 @@ The earlier `hard_notitle` rows of this table were invalid (see "What went wrong
 ## Reading it
 
 1. **LABR and raw HARD:** MSA and non-MSA are level for AraBERT and MARBERT. The largest visible gap is MARBERT on LABR (+1.9 in favour of non-MSA), with overlapping intervals.
-2. **ASTD:** XLM-R is 9.4 points lower on Egyptian tweets than on MSA ones (0.809 against 0.903). The others show small differences. It is the only candidate effect and the groups hold about 100 rows each, so I call it suggestive. It also matches XLM-R's weaker results on tweets generally (Chapter 10).
+2. **ASTD:** XLM-R scores 9.4 points lower on Egyptian tweets than on MSA ones (0.809 against 0.903), but the interval for the difference is [-0.6, +19.9] with about 100 rows per group, so it includes 0. It is the only candidate effect and it is suggestive only. It also fits XLM-R's weaker results on tweets generally (Chapter 10).
 3. **ALLaM** is no worse on non-MSA than MSA on LABR and HARD, but its group sizes (83 to 161 rows) make that uninformative.
 4. **A manual read of 61 MARBERT errors** (Chapter 14) found dialect vocabulary plausible in about 13% of them. Most errors were missing or mixed sentiment, stance-dependent labels and questionable gold labels.
 
@@ -130,16 +130,51 @@ The earlier `hard_notitle` rows of this table were invalid (see "What went wrong
 | **Null result read from overlapping intervals** | Fixed with direct group-difference intervals in `dialect_checks.py` |
 | **Overconfident wording** | The README's "no dialect gap beyond noise" needs the caveats above. It is updated below |
 
-## Numbers still to fill in
+## Measured after the fix
 
-After running `dialect_checks.py` and the patched `dialect_analysis.py`:
+### Agreement of the two classifiers
 
-| Item | Result |
-|---|---|
-| Agreement of the two classifiers on non-MSA rows (ASTD / HARD / AJGT / LABR) | (fill in) |
-| `hard_notitle` group sizes after the fix (expected 5,522 and 3,044) | (fill in) |
-| `hard_notitle` MSA against non-MSA, per encoder | (fill in) |
-| Group-difference intervals, LABR, HARD, ASTD | (fill in) |
+On rows the main classifier calls non-MSA with confidence at least 0.7, and for the main classifier's MSA rows, what the second classifier says:
+
+| Dataset | Non-MSA rows | Second classifier agrees | Second classifier's label on the rows the main one calls MSA |
+|---|---|---|---|
+| AJGT | 95 | 80.0% | Gulf 40%, Maghrebi 28%, Levantine 16%, Egyptian 12%, Mesopotamian 4% (25 rows) |
+| ASTD | 118 | 86.4% | Egyptian 51%, Gulf 26%, Maghrebi 12%, Levantine 11% (103 rows) |
+| HARD | 3,044 | 78.4% | Gulf 89%, Maghrebi 8%, Levantine 2%, Egyptian 1% (5,522 rows) |
+| LABR | 745 | 83.1% | Maghrebi 51%, Gulf 26%, Egyptian 13%, Mesopotamian 5%, Levantine 5% (1,006 rows) |
+
+- **Predictions scored.** Agreement above 70% on ASTD held (86.4%). I expected HARD under 60% and AJGT lower than HARD. Both failed: HARD is 78.4% and AJGT 80.0%.
+- **On HARD the second classifier says Gulf for 89% of the rows the main classifier calls MSA.** On hotel reviews it appears to default to Gulf, so its 78.4% agreement on the non-MSA rows is probably largely base rates: 69% of HARD's non-MSA test rows are GLF (any confidence). This is an inference. Chance-corrected agreement (Cohen's kappa) is in `dialect_kappa.py`.
+- Both classifiers are MARBERTv2 fine-tunes, so agreement is not independent evidence of accuracy.
+- With no MSA class, the second classifier pushes formal text to a dialect, mostly Maghrebi on LABR and Gulf on HARD, as the 15-row sample suggested.
+- Chance-corrected agreement (`dialect_kappa.py`): (fill in after running).
+
+### Corrected `hard_notitle` rows
+
+After aligning the `hard` tags to the `hard_notitle` test rows by position:
+
+| Group | AraBERT | MARBERT | XLM-R | ALLaM (own rows) |
+|---|---|---|---|---|
+| MSA (n 5,522; ALLaM 161) | 0.906 | 0.900 | 0.901 | 0.849 |
+| non-MSA (n 3,044; ALLaM 83) | 0.910 | 0.912 | 0.905 | 0.899 |
+
+The group sizes match raw HARD, which confirms the alignment. The earlier values (MARBERT 0.931 on both groups) came from the selected subset of rows whose text had a quoted title (3,308 and 1,737 rows). On the full rows MARBERT scores 0.900 and 0.912, close to its overall 0.904.
+
+### Group differences (`dialect_checks.py`)
+
+MSA score minus the other group's score, in points, with a 95% interval from resampling each group independently (negative means the other group scores higher):
+
+| Dataset (n of the two groups) | AraBERT | MARBERT | XLM-R |
+|---|---|---|---|
+| LABR (1,006 and 745) | -0.2 [-3.4, +3.0] | -1.9 [-4.8, +1.2] | +1.4 [-1.8, +4.8] |
+| HARD, as released (5,522 and 3,044) | -0.2 [-1.1, +0.7] | -0.0 [-1.0, +0.9] | +0.0 [-0.9, +1.0] |
+| HARD, descriptor removed (5,522 and 3,044) | -0.5 [-1.7, +0.8] | -1.1 [-2.4, +0.2] | -0.4 [-1.7, +1.0] |
+| ASTD, MSA minus Egyptian (103 and 105) | -0.2 [-9.5, +9.4] | +2.4 [-7.0, +12.9] | +9.4 [-0.6, +19.9] |
+
+- **Every interval includes 0.** Predictions scored: all four held. MARBERT without the descriptor includes 0 by 0.2 points, and XLM-R on ASTD by 0.6.
+- **What the intervals rule out** (half-widths): gaps beyond about 1 point on raw HARD, 1.3 without the descriptor, 3.0 to 3.3 on LABR, and 9.5 to 10 on ASTD. The ASTD intervals cannot exclude a 9-point XLM-R gap.
+- Without the descriptor, all three encoders score higher on non-MSA text, by 0.4 to 1.1 points. The encoders are scored on the same rows and are correlated, so this is not three independent confirmations, and every interval includes 0.
+- ASTD scores use a majority vote over three seeds. HARD and LABR are single seeds.
 
 ## Not done
 
