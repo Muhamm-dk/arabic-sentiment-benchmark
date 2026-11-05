@@ -83,12 +83,55 @@ Predictions made before running, scored:
 
 What the statistics add to the manual read:
 - A quarter to a half of MARBERT's errors are rows all four systems miss (27%, 33%, 34%, 48%). That is consistent with label noise and ambiguity, though hard rows would show the same pattern.
-- Highest-confidence rows that all four systems miss (27 rows printed: 4 AJGT, 7 ASTD, 8 LABR, 8 HARD): 24 are gold-positive (AJGT 2 of 4, ASTD 6 of 7, LABR 8 of 8, HARD 8 of 8), against a base rate of about 50% (32% on ASTD). My reading of the visible text (cut at about 110 characters): all 8 HARD rows read as complaints under a positive label, 7 of 8 LABR rows show a criticism or contrast, and the ASTD rows are mostly political tweets whose label follows the author's side. Hypothesis, untested: positive labels hide criticism more than negative labels hide praise. The star-rating check below tests it.
+- Highest-confidence rows that all four systems miss (27 rows printed: 4 AJGT, 7 ASTD, 8 LABR, 8 HARD): 24 are gold-positive (AJGT 2 of 4, ASTD 6 of 7, LABR 8 of 8, HARD 8 of 8), against a base rate of about 50% (32% on ASTD). My reading of the visible text (cut at about 110 characters): all 8 HARD rows read as complaints under a positive label, 7 of 8 LABR rows show a criticism or contrast, and the ASTD rows are mostly political tweets whose label follows the author's side. Hypothesis: positive labels hide criticism more than negative labels hide praise. The star-rating check below does not support it as a general pattern: it describes only this high-confidence subset.
 - Confidence is a weak error flag, which matters because the deployed API returns it (calibration below).
 
 Not verified: whether HARD's review text holds a "liked" part and a "disliked" part (several complaint rows begin with a "none" phrase), and whether these rows reflect star ratings that are mildly positive.
 
-Error rate by original star rating and calibration of MARBERT's confidence (`error_extra.py`): (fill in after running `error_extra.py`).
+### Error rate by original star rating
+
+`error_extra.py`, seed 0, test sets. Error rate by the original star rating (3 stars were removed in Chapter 4):
+
+| Dataset | Stars | Rows | TF-IDF | AraBERT | MARBERT | XLM-R |
+|---|---|---|---|---|---|---|
+| LABR | 1 | 557 | 12.9% | 8.4% | 8.6% | 13.1% |
+| LABR | 2 | 572 | 26.4% | 15.9% | 17.8% | 26.0% |
+| LABR | 4 | 580 | 22.4% | 22.2% | 14.5% | 16.2% |
+| LABR | 5 | 574 | 11.8% | 8.0% | 7.0% | 5.2% |
+| HARD, descriptor removed | 1 | 1,597 | 9.5% | 6.4% | 6.7% | 7.0% |
+| HARD, descriptor removed | 2 | 3,832 | 15.7% | 11.0% | 12.0% | 12.7% |
+| HARD, descriptor removed | 4 | 2,555 | 18.4% | 15.3% | 14.4% | 14.9% |
+| HARD, descriptor removed | 5 | 2,723 | 5.9% | 3.1% | 3.2% | 3.0% |
+
+- **Border ratings are the hard ones for every system.** MARBERT errs on 17.8% of 2-star and 14.5% of 4-star LABR reviews against 8.6% and 7.0% for 1 and 5 stars, and on HARD without the descriptor 12.0% and 14.4% against 6.7% and 3.2%. This is expected: the 3-star class was removed, so ratings 2 and 4 sit next to the decision boundary.
+- **Whether positive or negative labels are harder depends on the cut.** By class, MARBERT errs on 13.3% of gold-negative LABR reviews (150 of 1,129) against 10.7% of gold-positive (124 of 1,154), and on 10.4% (567 of 5,429) against 8.6% (456 of 5,278) on HARD. Negative-labelled rows have the higher error rate on both. 4-star rows err more than 2-star rows on HARD for all four systems (MARBERT 14.4% against 12.0%), but not on LABR for TF-IDF, MARBERT and XLM-R.
+- **The hypothesis from the highest-confidence rows is not a general pattern.** It describes those consensus errors (24 of 27 gold-positive), not errors overall.
+- **MARBERT's lead over AraBERT on LABR sits in the 4-star rows:** 14.5% against 22.2%. On 2-star rows AraBERT is slightly better (15.9% against 17.8%), and on 1 and 5 stars the two are within 1.0 point. By class, AraBERT misses about 15% of gold-positive LABR reviews (computed from the rounded star-level rates) against 10.7% for MARBERT. One seed each. The cause was not tested. AraBERT's unknown pieces on intensifiers (Chapter 8) are a candidate, though not an obviously class-specific one.
+
+Predictions made before running, scored:
+1. **Failed.** Border ratings err at least twice as often as extremes in 9 of 16 checks (LABR 4 against 5 for AraBERT, MARBERT and XLM-R, not TF-IDF at 1.9 times; LABR 2 against 1 for TF-IDF and MARBERT only; HARD 4 against 5 for all four; HARD 2 against 1 for none).
+2. **Half held.** 4-star errors exceed 2-star errors on HARD for all four systems, not on LABR for three of four.
+3. **Held.** See below.
+
+### Calibration of MARBERT's confidence
+
+Confidence is the larger of the two softmax probabilities. Cells show accuracy, with mean confidence in brackets, and the number of rows. ASTD has no rows at 0.99 or more.
+
+| Dataset | [0.5, 0.7) | [0.7, 0.9) | [0.9, 0.99) | [0.99, 1] | Expected calibration error |
+|---|---|---|---|---|---|
+| AJGT (180) | 0.000 (0.616), 1 | 0.333 (0.837), 3 | 0.667 (0.968), 9 | 0.946 (0.997), 167 | 0.075 |
+| ASTD (242) | 0.636 (0.599), 11 | 0.828 (0.830), 29 | 0.941 (0.972), 202 | none | 0.028 |
+| LABR (2,283) | 0.459 (0.612), 37 | 0.627 (0.815), 75 | 0.712 (0.968), 222 | 0.917 (0.997), 1,949 | 0.102 |
+| HARD without descriptor (10,707) | 0.517 (0.600), 263 | 0.616 (0.819), 515 | 0.882 (0.978), 4,476 | 0.969 (0.996), 5,453 | 0.066 |
+
+Rows at confidence 0.9 or more: AJGT 176, accuracy 0.932, mean confidence 0.996 (6.4 points below); ASTD 202, 0.941 against 0.972 (3.1); LABR 2,171, 0.896 against 0.994 (9.8); HARD 9,929, 0.930 against 0.988 (5.8).
+
+- **The model is overconfident.** On LABR, rows between 0.7 and 0.99 are right 63% to 71% of the time while the model reports 82% to 97%. 85% of LABR rows and 51% of HARD rows get 0.99 or more, so most answers claim near-certainty.
+- **Confidence still carries some information:** errors have lower mean confidence than correct answers (0.943 against 0.987 on LABR).
+- **The expected calibration error depends on the binning** (4 bins here, weights by rows). AJGT's low bins hold 1, 3 and 9 rows, so its figure is noisy.
+- **These are the single-dataset MARBERT models.** The deployed combined model is checked in Chapter 15.
+- **The API returns this number as `confidence` (Chapter 16).** It orders rows, but it is not a probability of being correct, and the README must not say so. Temperature scaling on validation outputs is the standard fix. Not done.
+
 
 ## What went wrong
 
@@ -99,6 +142,7 @@ Error rate by original star rating and calibration of MARBERT's confidence (`err
 | README wording | It called the annotator "the model author's assistant", which hid that it was an AI. Corrected |
 | Categories invented while reading | They were not fixed beforehand, so they may fit this sample better than a fresh one |
 | LABR is a sample | 25 of 274 errors |
+| A hypothesis from a subset | I suggested that positive labels hide criticism more than negative labels hide praise, from the highest-confidence rows all four systems miss. By class, negative-labelled rows have the higher error rate on LABR and HARD. Retracted above |
 
 ## Not done
 
