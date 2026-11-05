@@ -61,7 +61,7 @@ LLM setup: 8 shots (4 positive, 4 negative) from the train split, temperature 0,
 
 ### Deployed model
 
-One MARBERT fine-tuned on LABR, HARD (descriptor removed, 20,000-review subsample), ASTD and AJGT, single seed. Per-dataset test macro-F1: AJGT 0.933, ASTD 0.869, HARD no-descriptor 0.908, LABR 0.864. It matches the single-dataset models within noise (LABR is 1.6 points lower, borderline).
+One MARBERT fine-tuned on LABR, HARD (descriptor removed, 20,000-review subsample), ASTD and AJGT, single seed. Per-dataset test macro-F1: AJGT 0.933, ASTD 0.869, HARD no-descriptor 0.908, LABR 0.864. Against the single-dataset MARBERT runs it is 1.6 points lower on LABR (paired interval [-2.8, -0.4], so the cost is measurable) and not detectably different on HARD, ASTD (-3.0, -2.3 and -1.1 against the three specialist seeds, seed-0 interval [-6.7, +0.5]) or AJGT.
 
 ## Analysis
 
@@ -106,6 +106,7 @@ Measured cold start from scale-to-zero: about 27 s (container start plus model d
 ## Limitations
 
 - Binary task only; neutral and factual text is forced into a polarity.
+- The API's `confidence` is the larger softmax probability and it is overconfident: on LABR, rows between 0.9 and 0.99 are right 87.5% of the time and rows between 0.7 and 0.9 are right 65% of the time, while rows at 0.99 or more were right about 98% of the time on all four test sets. Use it as a ranking signal, not a probability.
 - ASTD and AJGT test sets are small, and ASTD labels often follow the author's political stance, not wording.
 - LLM results are single runs on one prompt, on 300-row subsets for LABR and HARD, and invalid replies count as errors. The public datasets may appear in LLM training data.
 - HARD encoder runs use a 20,000-review training subsample, so scores are probably a little below full-data scores.
