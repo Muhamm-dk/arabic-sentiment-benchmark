@@ -121,7 +121,22 @@ Weaknesses, from reading them:
 
 ## Training-serving check
 
-`serve_check.py` runs the API's `classify` on 300 test rows per dataset on the CPU and compares them with the saved predictions. Results: (fill in after running `serve_check.py`).
+`serve_check.py` runs the API's `classify` on 300 test rows per dataset on the CPU and compares them with the saved predictions. Results (CPU, fp32, the API's own `classify` function through the FastAPI test client in batches of 32, local weights in `outputs/combined-marbert-s0`):
+
+| Dataset | Rows | Macro-F1, saved predictions (bf16, GPU) | Macro-F1, API code (fp32, CPU) | Rows over 256 tokens |
+|---|---|---|---|---|
+| AJGT | 180 (all) | 0.9333 | 0.9333 | 0 |
+| ASTD | 242 (all) | 0.8691 | 0.8691 | 1 |
+| HARD, descriptor removed | 300 (random sample, seed 0) | 0.9231 | 0.9231 | 0 |
+| LABR | 300 (random sample, seed 0) | 0.8532 | 0.8532 | 17 |
+
+- Label disagreements: 0 of 1,022 rows. Probability difference between the saved bf16 values and the fp32 API values: mean 0.00041, maximum 0.0102.
+- The HARD and LABR rows are random 300-row samples drawn inside the script. They are not the LLM samples, so their scores differ from the full-test scores (0.9078 and 0.8641).
+- Test rows over 5,000 characters, which the API answers with 422: 4 of 13,412, all in LABR (0.18% of its test set).
+- LABR truncation: 17 of 300 (5.7%), against 4.6% over the full test set (Chapter 8). The difference is inside sampling noise (about 1.2 points at n=300).
+- Predictions scored: at most 0.5% disagreements (held, 0), mean difference under 0.005 and maximum under 0.05 (held), 5 to 25 rows over 5,000 characters all in LABR (half held, all in LABR but only 4).
+- Not covered: the HTTP layer and the key check, the Hub copy of the weights, the Docker image and the Azure deployment (each was checked on one sentence only, 0.9845 or 0.9965), CPU speed, and any quantized or ONNX variant.
+
 
 Predictions made before running: at most 0.5% label disagreements, a mean probability difference under 0.005 and a maximum under 0.05, and between 5 and 25 test rows over 5,000 characters, all in LABR.
 

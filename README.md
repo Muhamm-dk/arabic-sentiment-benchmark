@@ -92,7 +92,7 @@ docker run --rm -p 8000:8000 -v hf_cache:/home/app/.cache/huggingface arabic-sen
 curl -X POST localhost:8000/predict -H "Content-Type: application/json" -d '{"text": "الخدمة كانت سيئة جدا"}'
 ```
 
-Endpoints: `GET /health`, `POST /predict`, `POST /predict_batch` (max 32 texts), docs at `/docs`. CPU image of about 1.8 GB, weights pulled from the Hub at startup. There is no authentication or rate limiting, and no public deployment.
+Endpoints: `GET /health`, `POST /predict`, `POST /predict_batch` (max 32 texts), docs at `/docs`. CPU image of about 1.8 GB, weights pulled from the Hub at startup. When the `API_KEY` environment variable is set, `/predict` and `/predict_batch` require an `X-API-Key` header; without it they are open. There is no rate limiting. The public deployment is described under Deployment.
 
 ## Deployment
 
