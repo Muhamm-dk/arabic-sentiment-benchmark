@@ -15,3 +15,4 @@ results/preds/
 results/llm/*.jsonl
 results/dialect_tags.parquet
 docs/guide/build/
+docs/interview/

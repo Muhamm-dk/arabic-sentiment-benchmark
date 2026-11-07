@@ -7,8 +7,9 @@ Model on the Hub: [Muhamm-dk/arabic-sentiment-marbert-combined](https://huggingf
 ## Key findings
 
 1. **Fine-tuned Arabic encoders beat TF-IDF on every dataset.** AraBERT and MARBERT beat it everywhere, and XLM-R ties it on AJGT. MARBERT has the top score on LABR, ASTD and AJGT, and is within 0.3 points of the top score (AraBERT) on both HARD variants. The largest gain is on tweets (ASTD: 0.890 vs 0.771).
-2. **HARD contains a label leak.** Most reviews start with a Booking.com score label (for example "استثنائي", "ضعيف جداً") that maps almost one-to-one to a star rating. Removing it costs every system 5 to 10 macro-F1 points, so raw HARD scores are inflated. Both variants are reported.
+2. **HARD contains a label leak.** Most reviews start with a Booking.com score label (for example "استثنائي", "ضعيف جداً") that maps almost one-to-one to a star rating. Removing it costs every system about 5 to 8 macro-F1 points (TF-IDF 7.0 on the full test set; the LLMs are measured on 300 rows), so raw HARD scores are inflated. Both variants are reported.
 3. **No dialect gap detected, with caveats.** Per predicted-dialect scores for the encoders overlap between MSA and non-MSA text on LABR and raw HARD, and a manual read of 61 errors found dialect vocabulary plausible in about 13%. Dialect labels come from an unvalidated third-party classifier (it mislabels short Jordanian tweets), which biases any gap toward zero, and on HARD the Gulf label tracks hotel region. XLM-R on Egyptian tweets is one suggestive exception. The analysis does not cover Gulf or Maghrebi text.
+4. **Few-shot LLMs rarely match a fine-tuned encoder here.** With eight examples in the prompt, Qwen is level with MARBERT on ASTD (0.897 against 0.890) and is the only LLM clearly above TF-IDF anywhere. gpt-oss trails MARBERT on all five test sets and ALLaM, the Arabic-specialist model, on three, and ALLaM is no better than TF-IDF on ASTD. LLM samples are 300 rows on LABR and HARD, and each model was run once.
 
 ## Datasets
 
@@ -74,15 +75,28 @@ One MARBERT fine-tuned on LABR, HARD (descriptor removed, 20,000-review subsampl
 ## Reproduce
 
 ```bash
-uv sync
-uv run python -m arabic_sentiment.data           # build splits (needs data/raw/hard_extracted, see docs/datasets.md)
-uv run python -m arabic_sentiment.baseline
-uv run python -m arabic_sentiment.finetune --dataset ajgt --model marbert --seed 0
-GROQ_API_KEY=... ./run_llm_queue.sh qwen         # resumable, free-tier daily token caps apply
-uv run python -m arabic_sentiment.compare
+uv sync                                    # Python 3.12 and CUDA 12.8 PyTorch (RTX 50-series needs it)
+# HARD is not on the Hub: clone github.com/elnagara/HARD-Arabic-Dataset into data/raw/hard and unzip
+# data/balanced-reviews.zip into data/raw/hard_extracted (a UTF-16 file, see docs/datasets.md)
+uv run python -m arabic_sentiment.data                      # unified, deduplicated, split datasets
+uv run python -m arabic_sentiment.baseline                  # TF-IDF + logistic regression
+uv run python -m arabic_sentiment.baseline_preds            # TF-IDF test predictions
+./run_stage1.sh; ./run_stage2.sh; ./run_stage3.sh; ./run_xlmr_tuned.sh   # encoders (GPU)
+GROQ_API_KEY=... ./run_llm_queue.sh qwen                    # also gptoss and allam; resumable
+uv run python -m arabic_sentiment.report                    # encoder table
+uv run python -m arabic_sentiment.compare                   # LLMs against encoders on the same rows
+uv run python -m arabic_sentiment.paired_all                # paired bootstrap, encoders
+uv run python -m arabic_sentiment.paired_llm                # paired bootstrap, LLMs
+uv run python -m arabic_sentiment.dialect                   # tag test rows (GPU)
+uv run python -m arabic_sentiment.dialect_analysis
+uv run python -m arabic_sentiment.combined                  # training set of the deployed model
+uv run python -m arabic_sentiment.finetune --dataset combined --model marbert --seed 0 --epochs 3 --save
+uv run pytest tests -q                                      # API tests (need the saved weights)
 ```
 
-Prediction files and LLM replies contain dataset texts and are not tracked, so `compare.py` and `dialect_analysis.py` need the pipeline rerun first. Experiments are tracked with MLflow (`mlflow ui --backend-store-uri sqlite:///mlflow.db`). Tested on an RTX 5070 laptop GPU (8 GB) with WSL2.
+The `run_*.sh` scripts hold the exact arguments of every run. Prediction files and LLM replies contain dataset texts and are not tracked, so `compare.py`, `paired_all.py`, `paired_llm.py` and `dialect_analysis.py` need the steps above run first. Experiments are tracked with MLflow (`mlflow ui --backend-store-uri sqlite:///mlflow.db`). Tested on an RTX 5070 laptop GPU (8 GB) with WSL2.
+
+Layout: `src/arabic_sentiment/` (pipeline code and `serve/`), `tests/`, `docs/` (dataset notes, error analysis, model card, and a study guide in `docs/guide/` built with `docs/guide/build.sh`, which needs pandoc), `results/` (score files; predictions are not tracked), `run_*.sh` and `Dockerfile`.
 
 ## Serve
 
@@ -99,9 +113,10 @@ Endpoints: `GET /health`, `POST /predict`, `POST /predict_batch` (max 32 texts),
 Deployed on Azure Container Apps (consumption plan, scale to zero, 1 vCPU / 2 GiB), image from GitHub Container Registry.
 Endpoint: `https://arabic-sentiment-api.niceflower-4ddb1508.uaenorth.azurecontainerapps.io`
 `/predict` and `/predict_batch` require an `X-API-Key` header; ask the author for a demo key. `/health` is open.
+Example: `curl -X POST <endpoint>/predict -H "Content-Type: application/json" -H "X-API-Key: <key>" -d '{"text": "..."}'`
 The first request after idle takes longer while the container starts and loads the model. This is a portfolio demo
 with a single shared key and no rate limiting, and it may be taken down when the student credit expires.
-Measured cold start from scale-to-zero: about 27 s (container start plus model download). Warm requests: under 1 s round trip.
+Measured cold start from scale-to-zero: 26 to 28 s (two measurements; container start plus model download). The replica scales to zero about 6 minutes after the last request. Warm requests: under 1 s round trip.
 
 ## Limitations
 
@@ -118,9 +133,11 @@ Measured cold start from scale-to-zero: about 27 s (container start plus model d
 
 ## Licenses and citations
 
-Code: MIT. The four datasets do not state licenses, so the model is released for research use and the dataset texts are not redistributed in the current tree (they remain in earlier git history). Cite the original papers (verify details before citing):
+Code: MIT. The four datasets do not state licenses, so the model is released for research use and the dataset texts are not redistributed in the current tree (they remain in earlier git history). Cite the original papers:
 
-- LABR: Aly and Atiya, 2013
-- HARD: Elnagar, Khalifa and Einea, 2018, Springer
-- ASTD: Nabil, Aly and Atiya, 2015
-- AJGT: Alomari, ElSherif and Shaalan, 2017
+- LABR: Mohamed Aly and Amir Atiya. 2013. LABR: A Large Scale Arabic Book Reviews Dataset. ACL 2013 (short papers), pp. 494-498.
+- HARD: Elnagar A., Khalifa Y.S., Einea A. 2018. Hotel Arabic-Reviews Dataset Construction for Sentiment Analysis Applications. In: Intelligent Natural Language Processing: Trends and Applications, Studies in Computational Intelligence vol 740, pp. 35-52, Springer. doi:10.1007/978-3-319-67056-0_3
+- ASTD: Mahmoud Nabil, Mohamed Aly and Amir Atiya. 2015. ASTD: Arabic Sentiment Tweets Dataset. EMNLP 2015, pp. 2515-2519. doi:10.18653/v1/D15-1299
+- AJGT: Khaled M. Alomari, Hatem M. ElSherif and Khaled Shaalan. 2017. Arabic Tweets Sentimental Analysis Using Machine Learning. IEA/AIE 2017, Springer, pp. 602-610. doi:10.1007/978-3-319-60042-0_66
+
+Models: AraBERT (arXiv 2003.00104), MARBERT (Abdul-Mageed, Elmadany and Nagoudi, ACL 2021, "ARBERT & MARBERT: Deep Bidirectional Transformers for Arabic"), XLM-R (Conneau et al., arXiv 1911.02116).

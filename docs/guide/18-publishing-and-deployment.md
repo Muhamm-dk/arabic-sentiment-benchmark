@@ -124,15 +124,15 @@ Results: `/health` returned `device: cpu`, the keyless call returned 401, and th
 
 | Item | Value | Notes |
 |---|---|---|
-| Cold start | 27.5 s for `/health` | One measurement, after the replica count read 0. Two more are in the checks below |
+| Cold start | 27.5 s and 26.0 s for `/health` | Two measurements, each after the replica count read 0 (Oct 30 and Nov 7). A third at another time of day is open |
 | Warm request | 0.88 s for `/predict`, 0.75 s for `/health` | Round trip from the laptop, including HTTPS handshake and network |
 | Local baseline memory | 405 MiB | `docker stats` after one request. The largest request was not measured |
 | Azure size | 1 vCPU, 2.0 GiB | |
 | Free grant (from the pasted free-services page; may differ for a student subscription) | 180,000 vCPU-seconds, 360,000 GiB-seconds, 2M requests per month | At 1 vCPU and 2 GiB both run out after 180,000 seconds of active time, about 50 hours |
-| Estimated visits inside the grant | about 550 isolated visits a month | 180,000 / (27 s start plus about 300 s waiting before scale-down). The 300 s is my memory of a default, not measured |
+| Estimated visits inside the grant | about 440 to 530 isolated visits a month | 180,000 divided by the 342 to 408 s a replica lived per isolated visit (measured below). Assumes all of that time is billed at the active rate, which I did not verify |
 | Student credit | $100 for 12 months, no card (as the offer says) | Valid until about Oct 2027 |
 
-Azure end-to-end check (Nov 6, `container_check.py`): 240 saved test rows through `/predict_batch`, 0 label disagreements, mean probability difference 0.00033, maximum 0.0067, identical to the local container run. 45.6 s in total from the laptop, about 5 rows per second, with the replica already warm. Still to be filled after running the checks: scale-down time after a request, two more cold starts, cost to date, credit left. (fill in)
+Azure end-to-end check (Nov 6, `container_check.py`): 240 saved test rows through `/predict_batch`, 0 label disagreements, mean probability difference 0.00033, maximum 0.0067, identical to the local container run. 45.6 s in total from the laptop, about 5 rows per second, with the replica already warm. Scale-down (Nov 7): after one request the replica count read 1 for the first six polls and 0 from the seventh. The polls were about 65 s apart and the first came a few seconds after the request, so the replica was gone between about 5.7 and 6.8 minutes after it. That is consistent with a default cooldown of 5 minutes (from memory) plus polling delay. Second cold start, after the count read 0 for about 9 minutes: 26.0 s (the first was 27.5 s). Still to be filled: a third cold start at another time of day, cost to date, credit left. (fill in)
 
 ## Security review
 
