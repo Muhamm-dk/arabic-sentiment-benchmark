@@ -112,7 +112,17 @@ docker run --rm arabic-sentiment-api python -c "import torch, transformers, fast
 uv pip list 2>/dev/null | grep -i -E "^(torch|transformers|fastapi|pydantic|uvicorn) "
 ```
 
-   Result: (fill in).
+   Result (printed inside the image on Nov 5, next to the lock file used for every experiment):
+
+   | Package | Image (pip, built Oct 28) | `uv.lock` |
+   |---|---|---|
+   | torch | 2.15.0+cpu | 2.11.0+cu128 |
+   | transformers | 5.21.0 | 5.20.1 |
+   | fastapi | 0.162.0 | 0.143.3 |
+   | pydantic | 2.14.1 | 2.14.1 |
+   | uvicorn | 0.54.0 | 0.54.0 |
+
+   Three of five differ, as the unpinned Dockerfile allows, and the PyTorch release is four minor versions newer. The pushed `0.2.0` image shares these layers (the pip layers were cached in the Oct 30 rebuild). What is established: one sentence scored the same in the container and on the local GPU server (0.9965) and the same on Azure and through the Hub pipeline (0.9845), and `serve_check.py` matched 1,022 saved predictions, but that script ran in the lock-file environment, not in the image. What is not: whether the image reproduces predictions over many rows. `container_check.py` tests it through HTTP. Result (Nov 6, `container_check.py`, 240 saved test rows of the combined model, 60 per dataset, sent in batches of 32 through `/predict_batch` with the key): the local container and the Azure app (image `0.2.0`) both gave 0 label disagreements with the saved predictions, a mean probability difference of 0.00033 and a maximum of 0.0067, identical to the printed digits. Predictions made before running (0 disagreements, mean under 0.005, maximum under 0.05) held. So with torch 2.15.0, transformers 5.21.0 and fastapi 0.162.0 in the image, predictions still match those of the lock-file environment on these rows. 240 rows is a small sample and says nothing about other inputs. Time for the 240 rows: 14.9 s against the local container and 45.6 s against Azure, which includes the network from the laptop. That is about 16 rows per second locally and 5 on Azure with one vCPU (my division). The sample holds 60 long LABR reviews, so short texts should be faster. The Azure health call took 0.6 s, so that replica was already running.
 
 2. **Memory under the largest allowed request** (32 texts of 4,900 characters). `docker stats` is sampled once a second, so the printed maximum is a lower bound.
 

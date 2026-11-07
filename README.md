@@ -19,7 +19,7 @@ Binary label on all four. Exact duplicates removed, texts with conflicting label
 | LABR | Book reviews | Mixed | 1-2 stars negative, 4-5 positive, 3 dropped | 8,301 / 923 / 2,283 |
 | HARD | Hotel reviews (balanced file) | MSA and dialect | 1-2 negative, 4-5 positive | 81,906 / 10,421 / 10,707 |
 | ASTD | Tweets | Mostly Egyptian | Negative and Positive only (Objective, Neutral dropped) | 1,935 / 242 / 242 |
-| AJGT | Tweets | Jordanian | Negative, Positive | 1,438 / 180 / 180 |
+| AJGT | Tweets | Jordanian | Negative, Positive | 1,440 / 180 / 180 |
 
 Split decisions: LABR keeps its official test set with texts also present in train removed (55 rows). ASTD and AJGT use seeded stratified 80/10/10 splits. HARD is split 80/10/10 **by hotel**, so no hotel appears in two splits. Validation drives epoch and configuration selection, and test is scored once. See `docs/datasets.md`.
 
@@ -55,7 +55,7 @@ Free API quotas capped the LLM test size. All systems are scored on the **same r
 | HARD (300) | 0.950 | 0.953 | 0.960 | 0.953 | 0.927 | 0.866 | 0.927 |
 | HARD no-descr. (300) | 0.850 | 0.927 | 0.907 | 0.893 | 0.862 | 0.785 | 0.876 |
 
-CIs on 300 rows are about plus or minus 4 points, so the table is read through paired bootstrap tests on identical rows (`results/paired_llm.csv`). Qwen is not distinguishable from MARBERT on ASTD (-0.2 points, interval [-3.5, +3.1]) and is the only LLM clearly above TF-IDF anywhere (ASTD, +12.6). gpt-oss is below MARBERT on all five test sets. ALLaM is below MARBERT on ASTD, LABR and raw HARD, and not distinguishable on AJGT and HARD without the descriptor. On the 300-row LABR and HARD samples no LLM is detectably above TF-IDF, and the LABR sample favours TF-IDF (its score there is 6.8 points above its full-test score, a shift matched by 2 of 10,000 random samples of that shape).
+CIs on 300 rows are about plus or minus 4 points, so the table is read through paired bootstrap tests on identical rows (`results/paired_llm.csv`). Qwen is not distinguishable from MARBERT on ASTD (0.897 against 0.890 for MARBERT's three-seed mean; paired against seed 0, -0.2 points, interval [-3.5, +3.1]) and is the only LLM clearly above TF-IDF anywhere (ASTD, +12.6). gpt-oss is below MARBERT on all five test sets. ALLaM is below MARBERT on ASTD, LABR and raw HARD, and not distinguishable on AJGT and HARD without the descriptor. On the 300-row LABR and HARD samples no LLM is detectably above TF-IDF, and the LABR sample favours TF-IDF (its score there is 6.8 points above its full-test score, a shift matched by 2 of 10,000 random samples of that shape).
 
 LLM setup: 8 shots (4 positive, 4 negative) from the train split, temperature 0, one-word answer. English instruction chosen over Arabic on 60 validation tweets with a rule fixed in advance (Arabic only if it wins by 5 or more points). Models: `qwen/qwen3.8-27b`, `openai/gpt-oss-120b`, `allam-2-7b` on Groq, run October 2026.
 

@@ -132,7 +132,7 @@ Results: `/health` returned `device: cpu`, the keyless call returned 401, and th
 | Estimated visits inside the grant | about 550 isolated visits a month | 180,000 / (27 s start plus about 300 s waiting before scale-down). The 300 s is my memory of a default, not measured |
 | Student credit | $100 for 12 months, no card (as the offer says) | Valid until about Oct 2027 |
 
-Measurements and open items, to be filled after running the checks: scale-down time after a request, two more cold starts, cost to date, credit left. (fill in)
+Azure end-to-end check (Nov 6, `container_check.py`): 240 saved test rows through `/predict_batch`, 0 label disagreements, mean probability difference 0.00033, maximum 0.0067, identical to the local container run. 45.6 s in total from the laptop, about 5 rows per second, with the replica already warm. Still to be filled after running the checks: scale-down time after a request, two more cold starts, cost to date, credit left. (fill in)
 
 ## Security review
 
